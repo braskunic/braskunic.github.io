@@ -1,6 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Anúncio em Mini Janela</title>
+  <style>
+    /* Estilos para a mini janela do anúncio */
+    #adModal {
+      display: none; /* Inicialmente escondido */
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 10px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+      border-radius: 4px;
+    }
+    /* Estilos para o botão de fechar */
+    #closeAd {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      cursor: pointer;
+      color: #999;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Conteúdo do anúncio -->
+  <div id="adModal">
+    <span id="closeAd">&times;</span>
+    <iframe src="https://www.effectiveratecpm.com/jvcz7z3i?key=b20e344862edaeefffd577f3a9bcb261" 
+            height="200" width="300" 
+            title="Iframe Example">
+    </iframe>
+  </div>
+  
+  <script>
+    // Função para mostrar o anúncio
+    function showAd() {
+      document.getElementById('adModal').style.display = 'block';
+    }
+    
+    // Função para esconder o anúncio
+    function hideAd() {
+      document.getElementById('adModal').style.display = 'none';
+    }
+    
+    // Exibe o anúncio a cada 30 segundos
+    setInterval(showAd, 30000); // 30000ms = 30 segundos
+    
+    // Permite fechar o anúncio ao clicar no "x"
+    document.getElementById('closeAd').addEventListener('click', hideAd);
+  </script>
+  
+</body>
+</html>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TikBoost - Otimizador de Conteúdo para TikTok</title>
