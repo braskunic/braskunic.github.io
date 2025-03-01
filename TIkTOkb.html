@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikBoost - Otimizador de Conteúdo para TikTok</title>
+  <style>
+    :root {
+      --tiktok-black: #010101;
+      --tiktok-blue: #69C9D0;
+      --tiktok-red: #EE1D52;
+      --tiktok-white: #FFFFFF;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background-color: #121212;
+      color: var(--tiktok-white);
+    }
+    header {
+      background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red));
+      padding: 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .logo h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 0;
+    }
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .feature-card {
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 2rem;
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red));
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--tiktok-white);
+    }
+    .feature-card p {
+      color: #cccccc;
+      margin-bottom: 1.5rem;
+    }
+    .search-section, .insights-section, .scheduler-section {
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--tiktok-white);
+      text-align: center;
+    }
+    .search-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .input-group label {
+      font-size: 1rem;
+      color: #cccccc;
+    }
+    .input-group input, .input-group select, .input-group textarea {
+      padding: 1rem;
+      border-radius: 5px;
+      border: 1px solid #333333;
+      background-color: #2a2a2a;
+      color: var(--tiktok-white);
+      font-size: 1rem;
+    }
+    .input-group input:focus, .input-group select:focus, .input-group textarea:focus {
+      outline: none;
+      border-color: var(--tiktok-blue);
+    }
+    .btn {
+      background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red));
+      color: var(--tiktok-white);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+    .results {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: #2a2a2a;
+      border-radius: 5px;
+      display: none;
+    }
+    .results h4 {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--tiktok-white);
+    }
+    .hashtag-container, .title-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .hashtag {
+      background-color: rgba(105, 201, 208, 0.2);
+      color: var(--tiktok-blue);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    .title-suggestion {
+      background-color: rgba(238, 29, 82, 0.2);
+      color: var(--tiktok-red);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+    }
+    .time-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 80px;
+    }
+    .time {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .engagement-bar {
+      width: 30px;
+      background-color: #333333;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .engagement-level {
+      width: 100%;
+      background: linear-gradient(180deg, var(--tiktok-red), var(--tiktok-blue));
+      transition: height 0.3s ease;
+    }
+    .best-time {
+      position: relative;
+    }
+    .best-time::after {
+      content: '✓';
+      position: absolute;
+      top: -20px;
+      right: -5px;
+      background-color: var(--tiktok-red);
+      color: var(--tiktok-white);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+    footer {
+      background-color: var(--tiktok-black);
+      padding: 2rem;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    footer p {
+      color: #cccccc;
+    }
+    @media (max-width: 768px) {
+      .features {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 1rem;
+      }
+      .hero h2 {
+        font-size: 2rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>TikBoost</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <h2>Impulsione seus Vídeos no TikTok</h2>
+      <p>A ferramenta completa para criadores de conteúdo que desejam aumentar o desempenho de seus vídeos, evitando que eles "flopem"</p>
+    </section>
+
+    <section class="features">
+      <div class="feature-card">
+        <h3>Hashtags Personalizadas</h3>
+        <p>Encontre as hashtags mais relevantes para suas edições e aumente a visibilidade dos seus vídeos.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Títulos Atraentes</h3>
+        <p>Gere títulos otimizados que prendem a atenção e aumentam as chances de viralização do seu conteúdo.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Agendamento Estratégico</h3>
+        <p>Descubra os melhores horários para publicar seus vídeos e maximize seu alcance e engajamento.</p>
+      </div>
+    </section>
+
+    <!-- Gerador de Hashtags -->
+    <section class="search-section">
+      <h3 class="section-title">Gerador de Hashtags</h3>
+      <div class="search-form">
+        <div class="input-group">
+          <label for="edit-type">Tipo de Edição</label>
+          <select id="edit-type">
+            <option value="">Selecione uma categoria</option>
+            <option value="movie">Filmes</option>
+            <option value="series">Séries</option>
+            <option value="cartoon">Desenhos</option>
+            <option value="games">Games</option>
+            <option value="music">Música</option>
+            <option value="other">Outros</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="edit-name">Nome da Edição</label>
+          <input type="text" id="edit-name" placeholder="Ex: Stranger Things, Marvel, Fortnite...">
+        </div>
+        <div class="input-group">
+          <label for="edit-style">Estilo de Edição</label>
+          <select id="edit-style">
+            <option value="">Selecione um estilo</option>
+            <option value="capcut">CapCut</option>
+            <option value="aftereffects">After Effects</option>
+            <option value="premiere">Premiere Pro</option>
+            <option value="alight">Alight Motion</option>
+            <option value="other">Outros</option>
+          </select>
+        </div>
+        <!-- Loader para hashtags -->
+        <div id="ai-loader-hashtags" style="display: none; color: #69C9D0;">Carregando...</div>
+        <button class="btn" onclick="generateHashtagsWithAI()">Gerar Hashtags</button>
+      </div>
+      <div class="results" id="hashtag-results">
+        <h4>Hashtags Sugeridas</h4>
+        <div class="hashtag-container" id="hashtags">
+          <!-- As hashtags geradas aparecerão aqui -->
+        </div>
+        <button class="btn" onclick="copyHashtags()">Copiar Hashtags</button>
+      </div>
+    </section>
+
+    <!-- Gerador de Títulos -->
+    <section class="insights-section">
+      <h3 class="section-title">Create Search Insights</h3>
+      <div class="search-form">
+        <div class="input-group">
+          <label for="content-description">Descreva seu conteúdo</label>
+          <textarea id="content-description" rows="4" placeholder="Descreva brevemente o conteúdo do seu vídeo..."></textarea>
+        </div>
+        <div class="input-group">
+          <label for="target-audience">Público-alvo</label>
+          <select id="target-audience">
+            <option value="">Selecione seu público-alvo</option>
+            <option value="teens">Adolescentes (13-17)</option>
+            <option value="young-adults">Jovens Adultos (18-24)</option>
+            <option value="adults">Adultos (25-34)</option>
+            <option value="mature">Adultos Maduros (35+)</option>
+          </select>
+        </div>
+        <!-- Loader para títulos -->
+        <div id="ai-loader-titles" style="display: none; color: #EE1D52;">Carregando...</div>
+        <button class="btn" onclick="generateTitlesWithAI()">Gerar Títulos</button>
+      </div>
+      <div class="results" id="title-results">
+        <h4>Sugestões de Títulos</h4>
+        <div class="title-container" id="titles">
+          <!-- As sugestões de títulos aparecerão aqui -->
+        </div>
+        <button class="btn" onclick="copyTitle()">Copiar Título Selecionado</button>
+      </div>
+    </section>
+
+    <!-- Agendamento Otimizado -->
+    <section class="scheduler-section">
+      <h3 class="section-title">Agendamento Otimizado</h3>
+      <div class="search-form">
+        <div class="input-group">
+          <label for="content-type-scheduler">Tipo de Conteúdo</label>
+          <select id="content-type-scheduler">
+            <option value="">Selecione o tipo de conteúdo</option>
+            <option value="tutorial">Tutorial</option>
+            <option value="entertainment">Entretenimento</option>
+            <option value="comedy">Comédia</option>
+            <option value="educational">Educacional</option>
+            <option value="lifestyle">Lifestyle</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="day-of-week">Dia da Semana</label>
+          <select id="day-of-week">
+            <option value="">Selecione o dia da semana</option>
+            <option value="monday">Segunda-feira</option>
+            <option value="tuesday">Terça-feira</option>
+            <option value="wednesday">Quarta-feira</option>
+            <option value="thursday">Quinta-feira</option>
+            <option value="friday">Sexta-feira</option>
+            <option value="saturday">Sábado</option>
+            <option value="sunday">Domingo</option>
+          </select>
+        </div>
+        <!-- Loader para agendamento -->
+        <div id="ai-loader-schedule" style="display: none; color: #69C9D0;">Carregando...</div>
+        <button class="btn" onclick="showScheduleWithAI()">Analisar Horários</button>
+      </div>
+      <div class="results" id="schedule-results">
+        <h4>Melhores Horários para Postagem</h4>
+        <p>Com base nas suas seleções, estes são os horários mais otimizados para publicar:</p>
+        <div class="timeline">
+          <div class="time-slot">
+            <div class="time">8:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 40%;"></div>
+            </div>
+          </div>
+          <div class="time-slot">
+            <div class="time">10:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 60%;"></div>
+            </div>
+          </div>
+          <div class="time-slot">
+            <div class="time">12:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 75%;"></div>
+            </div>
+          </div>
+          <div class="time-slot best-time">
+            <div class="time">15:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 90%;"></div>
+            </div>
+          </div>
+          <div class="time-slot">
+            <div class="time">18:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 85%;"></div>
+            </div>
+          </div>
+          <div class="time-slot">
+            <div class="time">20:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 80%;"></div>
+            </div>
+          </div>
+          <div class="time-slot">
+            <div class="time">22:00</div>
+            <div class="engagement-bar" style="height: 100px;">
+              <div class="engagement-level" style="height: 65%;"></div>
+            </div>
+          </div>
+        </div>
+        <p style="margin-top: 1rem; text-align: center;">
+          Horário recomendado: <strong><span id="best-time-display">15:00</span></strong> - Melhor período para o seu tipo de conteúdo
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2025 TikBoost - Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    // Configuração da API Gemini
+    const GEMINI_API_KEY = "AIzaSyB1T0zW-6RVjbbK5b0PdGkUstVJVtZQw84"; // Substitua pela sua chave de API real
+    const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+
+    // Função para gerar conteúdo com a Gemini AI
+    async function generateWithGeminiAI(promptType, userInputs) {
+      try {
+        let prompt = "";
+        if (promptType === "hashtags") {
+          const { editType, editName, editStyle } = userInputs;
+          prompt = `Você é um especialista em marketing de conteúdo para TikTok. 
+Gere 10 hashtags em português que maximizem o alcance e engajamento para um vídeo com:
+- Tipo de conteúdo: ${editType}
+- Nome/tema da edição: ${editName}
+- Estilo/ferramenta de edição: ${editStyle}
+Formate sua resposta apenas com as hashtags, sem explicações adicionais. Inclua hashtags específicas e gerais.`;
+        } else if (promptType === "titles") {
+          const { contentDescription, targetAudience } = userInputs;
+          prompt = `Você é um especialista em criação de conteúdo viral para TikTok. 
+Gere 5 títulos chamativos em português para um vídeo com:
+- Descrição do conteúdo: ${contentDescription}
+- Público-alvo: ${targetAudience}
+Os títulos devem usar elementos como emojis, letras maiúsculas para ênfase, e termos que aumentem a curiosidade.
+Formate sua resposta apenas com os títulos, um por linha, sem explicações adicionais.`;
+        } else if (promptType === "schedule") {
+          const { contentType, dayOfWeek } = userInputs;
+          prompt = `Você é um especialista em algoritmos do TikTok. 
+Com base nas suas análises de dados, indique os melhores horários para postar um vídeo com:
+- Tipo de conteúdo: ${contentType}
+- Dia da semana: ${dayOfWeek}
+Formate sua resposta como uma lista de 7 horários (entre 8h e 22h) com seus respectivos percentuais de engajamento estimados (de 0 a 100).
+O formato deve ser exatamente: "8:00|40,10:00|50,12:00|60,15:00|90,18:00|85,20:00|70,22:00|65"`;
+        }
+        const requestBody = {
+          contents: [{
+            parts: [{ text: prompt }]
+          }]
+        };
+
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erro na API: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        let result;
+        if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts) {
+          const responseText = data.candidates[0].content.parts[0].text;
+          if (promptType === "hashtags") {
+            result = processHashtagsResponse(responseText);
+          } else if (promptType === "titles") {
+            result = processTitlesResponse(responseText);
+          } else if (promptType === "schedule") {
+            result = processScheduleResponse(responseText);
+          }
+        } else {
+          throw new Error("Formato de resposta inesperado");
+        }
+        return result;
+      } catch (error) {
+        console.error("Erro ao chamar a API Gemini:", error);
+        return null;
+      }
+    }
+
+    // Processamento das respostas da API
+    function processHashtagsResponse(response) {
+      const hashtagRegex = /#[\w\u00C0-\u00FF]+/g;
+      const hashtags = response.match(hashtagRegex) || [];
+      return [...new Set(hashtags)].slice(0, 10);
+    }
+
+    function processTitlesResponse(response) {
+      const titles = response.split('\n')
+        .map(line => line.trim())
+        .filter(line => line && line.length > 5);
+      return titles.slice(0, 5);
+    }
+
+    function processScheduleResponse(response) {
+      try {
+        const scheduleFormat = response.match(/(\d+:\d+\|\d+,?)+/);
+        if (scheduleFormat) {
+          return scheduleFormat[0].split(',').map(item => {
+            const [time, engagement] = item.split('|');
+            return {
+              time,
+              engagement: parseInt(engagement)
+            };
+          });
+        } else {
+          return [
+            { time: "8:00", engagement: 40 },
+            { time: "10:00", engagement: 60 },
+            { time: "12:00", engagement: 75 },
+            { time: "15:00", engagement: 90 },
+            { time: "18:00", engagement: 85 },
+            { time: "20:00", engagement: 80 },
+            { time: "22:00", engagement: 65 }
+          ];
+        }
+      } catch (error) {
+        console.error("Erro ao processar resposta de agendamento:", error);
+        return [
+          { time: "8:00", engagement: 40 },
+          { time: "10:00", engagement: 60 },
+          { time: "12:00", engagement: 75 },
+          { time: "15:00", engagement: 90 },
+          { time: "18:00", engagement: 85 },
+          { time: "20:00", engagement: 80 },
+          { time: "22:00", engagement: 65 }
+        ];
+      }
+    }
+
+    // Funções para gerar conteúdo com a Gemini AI
+    async function generateHashtagsWithAI() {
+      const editType = document.getElementById('edit-type').value;
+      const editName = document.getElementById('edit-name').value;
+      const editStyle = document.getElementById('edit-style').value;
+
+      if (!editType || !editName || !editStyle) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      document.getElementById('ai-loader-hashtags').style.display = 'block';
+      const userInputs = { editType, editName, editStyle };
+      const aiHashtags = await generateWithGeminiAI("hashtags", userInputs);
+      document.getElementById('ai-loader-hashtags').style.display = 'none';
+
+      if (aiHashtags) {
+        const hashtagsContainer = document.getElementById('hashtags');
+        hashtagsContainer.innerHTML = '';
+        aiHashtags.forEach(hashtag => {
+          const hashtagElement = document.createElement('div');
+          hashtagElement.className = 'hashtag';
+          hashtagElement.textContent = hashtag;
+          hashtagsContainer.appendChild(hashtagElement);
+        });
+        document.getElementById('hashtag-results').style.display = 'block';
+      } else {
+        alert('Ocorreu um erro ao gerar hashtags. Tente novamente ou use o método padrão.');
+      }
+    }
+
+    async function generateTitlesWithAI() {
+      const contentDescription = document.getElementById('content-description').value;
+      const targetAudience = document.getElementById('target-audience').value;
+
+      if (!contentDescription || !targetAudience) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      document.getElementById('ai-loader-titles').style.display = 'block';
+      const userInputs = { contentDescription, targetAudience };
+      const aiTitles = await generateWithGeminiAI("titles", userInputs);
+      document.getElementById('ai-loader-titles').style.display = 'none';
+
+      if (aiTitles) {
+        const titlesContainer = document.getElementById('titles');
+        titlesContainer.innerHTML = '';
+        aiTitles.forEach(title => {
+          const titleElement = document.createElement('div');
+          titleElement.className = 'title-suggestion';
+          titleElement.textContent = title;
+          titlesContainer.appendChild(titleElement);
+        });
+        document.getElementById('title-results').style.display = 'block';
+      } else {
+        alert('Ocorreu um erro ao gerar títulos. Tente novamente ou use o método padrão.');
+      }
+    }
+
+    async function showScheduleWithAI() {
+      const contentType = document.getElementById('content-type-scheduler').value;
+      const dayOfWeek = document.getElementById('day-of-week').value;
+
+      if (!contentType || !dayOfWeek) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+
+      document.getElementById('ai-loader-schedule').style.display = 'block';
+      const userInputs = { contentType, dayOfWeek };
+      const scheduleData = await generateWithGeminiAI("schedule", userInputs);
+      document.getElementById('ai-loader-schedule').style.display = 'none';
+
+      if (scheduleData) {
+        const engagementBars = document.querySelectorAll('.engagement-level');
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const timeElements = document.querySelectorAll('.time');
+
+        const bestTimeIndex = scheduleData.reduce((maxIndex, current, index, array) =>
+          current.engagement > array[maxIndex].engagement ? index : maxIndex, 0);
+
+        scheduleData.forEach((slot, index) => {
+          if (index < engagementBars.length) {
+            engagementBars[index].style.height = `${slot.engagement}%`;
+            timeElements[index].textContent = slot.time;
+            timeSlots[index].classList.remove('best-time');
+            if (index === bestTimeIndex) {
+              timeSlots[index].classList.add('best-time');
+              document.getElementById('best-time-display').textContent = slot.time;
+            }
+          }
+        });
+        document.getElementById('schedule-results').style.display = 'block';
+      } else {
+        alert('Ocorreu um erro ao gerar sugestões de agendamento. Tente novamente ou use o método padrão.');
+      }
+    }
+
+    // Funções para copiar resultados
+    function copyHashtags() {
+      const hashtags = Array.from(document.querySelectorAll('.hashtag'))
+        .map(hashtag => hashtag.textContent)
+        .join(' ');
+      navigator.clipboard.writeText(hashtags)
+        .then(() => alert('Hashtags copiadas para a área de transferência!'))
+        .catch(err => alert('Erro ao copiar: ' + err));
+    }
+
+    function copyTitle() {
+      const selectedTitle = document.querySelector('.title-suggestion:first-child').textContent;
+      navigator.clipboard.writeText(selectedTitle)
+        .then(() => alert('Título copiado para a área de transferência!'))
+        .catch(err => alert('Erro ao copiar: ' + err));
+    }
+  </script>
+</body>
+</html>
