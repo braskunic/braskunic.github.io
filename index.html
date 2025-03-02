@@ -5,62 +5,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Anúncio em Mini Janela</title>
-  <style>
-    /* Estilos para a mini janela do anúncio */
-    #adModal {
-      border-radius: 8px;
-      display: none; /* Inicialmente escondido */
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      padding: 10px;
-      box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
-      border-radius: 4px;
-    }
-    .nav-item:hover::after {
-      width: 100%;
-    }
-    .logo h1 {
-      font-size: 16px;
-    }
-  </style>
-</head>
-<body>
-  
-  <!-- Conteúdo do anúncio -->
-  <div id="adModal">
-    <span id="closeAd">&times;</span>
-    <iframe src="https://www.effectiveratecpm.com/jvcz7z3i?key=b20e344862edaeefffd577f3a9bcb261" 
-            height="200" width="300" 
-            title="Iframe Example">
-    </iframe>
-  </div>
-  
-  <script>
-    // Função para mostrar o anúncio
-    function showAd() {
-      document.getElementById('adModal').style.display = 'block';
-    }
-    
-    // Função para esconder o anúncio
-    function hideAd() {
-      document.getElementById('adModal').style.display = 'none';
-    }
-    
-    // Exibe o anúncio a cada 30 segundos
-    setInterval(showAd, 30000); // 30000ms = 30 segundos
-    
-    // Permite fechar o anúncio ao clicar no "x"
-    document.getElementById('closeAd').addEventListener('click', hideAd);
-  </script>
-  
-</body>
-</html>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TikBoost - Otimizador de Conteúdo para TikTok</title>
@@ -70,7 +14,6 @@
       --tiktok-black: #010101;
       --tiktok-dark: #121212;
       --tiktok-dark: #121212;
-      --tiktok-blue: #69C9D0;
       --tiktok-red: #EE1D52;
       --tiktok-white: #FFFFFF;
       --theme-transition: all 0.3s ease;
@@ -93,7 +36,7 @@
     header {
       background: rgba(18, 18, 18, 0.95);
       backdrop-filter: blur(10px);
-      padding: 0.8rem 2rem;
+      padding: 1rem 2rem;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       position: sticky;
@@ -159,28 +102,6 @@
       height: 2px;
       background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red));
       transition: width 0.3s ease;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid rgba(105, 201, 208, 0.3);
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    .logo-icon {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(45deg, var(--tiktok-blue), var(--tiktok-red));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 20px;
-      transform: rotate(-5deg);
-      box-shadow: 0 4px 10px rgba(238, 29, 82, 0.3);
     }
     .nav-menu {
       display: flex;
@@ -212,7 +133,7 @@
     }
     .monetize-btn {
       background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red));
-      color: var(--tiktok-white);
+      color: white;
       border: none;
       padding: 0.7rem 1.5rem;
       border-radius: 30px;
@@ -240,7 +161,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin-top: 1rem;
+      margin-top: 2rem;
       padding: 3rem 0;
     }
     .hero h2 {
@@ -272,7 +193,7 @@
       position: relative;
       overflow: hidden;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      transition: var(--theme-transition);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, var(--theme-transition);
     }
     body.light-mode .feature-card {
       background-color: #ffffff;
@@ -289,6 +210,7 @@
     }
     .feature-card:hover {
       transform: translateY(-10px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
     }
     .feature-card h3 {
       font-size: 1.5rem;
@@ -307,7 +229,7 @@
       border-radius: 10px;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       transition: var(--theme-transition);
     }
     body.light-mode .search-section, body.light-mode .insights-section, body.light-mode .scheduler-section {
@@ -346,7 +268,7 @@
       border: 1px solid #333333;
       background-color: #2a2a2a;
       color: var(--tiktok-white);
-      font-size: 1rem;
+      font-size: 1.05rem;
       transition: var(--theme-transition);
     }
     body.light-mode .input-group input, body.light-mode .input-group select, body.light-mode .input-group textarea {
@@ -365,10 +287,11 @@
       padding: 1rem 2rem;
       border-radius: 5px;
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(238, 29, 82, 0.3);
+      letter-spacing: 0.5px;
     }
     .btn:hover {
       opacity: 0.9;
@@ -399,7 +322,7 @@
     }
     .hashtag {
       background-color: rgba(105, 201, 208, 0.2);
-      color: var(--tiktok-blue);
+      color: #69C9D0;
       padding: 0.5rem 1rem;
       border-radius: 20px;
       font-size: 0.9rem;
@@ -410,7 +333,7 @@
     }
     .title-suggestion {
       background-color: rgba(238, 29, 82, 0.2);
-      color: var(--tiktok-red);
+      color: #EE1D52;
       padding: 0.5rem 1rem;
       border-radius: 5px;
       font-size: 0.9rem;
@@ -475,7 +398,7 @@
       padding: 2rem;
       text-align: center;
       border-top: 1px solid rgba(105, 201, 208, 0.2);
-      margin-top: 3rem;
+      margin-top: 4rem;
       transition: var(--theme-transition);
     }
     body.light-mode footer {
@@ -513,7 +436,7 @@
     .theme-switch {
       position: relative;
       width: 60px;
-      height: 30px;
+      height: 28px;
       margin-left: auto;
       margin-right: 20px;
     }
@@ -529,7 +452,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #2a2a2a;
+      background-color: #333;
       transition: .4s;
       border-radius: 34px;
     }
@@ -539,8 +462,8 @@
     .slider:before {
       position: absolute;
       content: "";
-      height: 22px;
-      width: 22px;
+      height: 20px;
+      width: 20px;
       left: 4px;
       bottom: 4px;
       background-color: white;
@@ -554,15 +477,56 @@
       transform: translateX(30px);
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>');
     }
+    
+    /* Language selector styling */
+    .lang-selector {
+      position: relative;
+      margin-right: 15px;
+    }
+    
+    #language-select {
+      background: rgba(18, 18, 18, 0.3);
+      color: white;
+      border: 1px solid rgba(105, 201, 208, 0.3);
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      appearance: none;
+      padding-right: 30px;
+      transition: var(--theme-transition);
+    }
+    
+    body.light-mode #language-select {
+      background: rgba(255, 255, 255, 0.3);
+      color: #333;
+      border: 1px solid rgba(105, 201, 208, 0.2);
+    }
+    
+    /* Onboarding overlay styling improvements */
+    #onboarding-overlay {
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    
+    .welcome-content {
+      transform: translateY(20px);
+      animation: slideUp 0.5s forwards;
+    }
+    
+    @keyframes slideUp {
+      to { transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="logo-container">
       <div class="logo-icon">TB</div>
-      <div class="logo">
-        <h1>TikBoost</h1>
-      </div>
       <div class="logo">
         <h1>TikBoost</h1>
       </div>
@@ -578,20 +542,15 @@
       <div class="nav-item">Tutoriais</div>
     </div>
     <button class="monetize-btn">
-      Desbloquear Monetização
+      Começar Agora
     </button>
-    <div class="nav-menu">
-      <div class="nav-item">Ferramentas</div>
-      <div class="nav-item">Hashtags</div>
-      <div class="nav-item">Monetização</div>
-      <div class="nav-item">Tutoriais</div>
-    </div>
   </header>
 
   <div class="container">
     <section class="hero">
       <h2>Impulsione seus Vídeos no TikTok</h2>
       <p>A ferramenta completa para criadores de conteúdo que desejam aumentar o desempenho de seus vídeos, evitando que eles "flopem"</p>
+      <button class="btn" id="start-tour" style="padding: 1rem 2.5rem; font-size: 1.1rem;">Começar Tour</button>
     </section>
 
 
@@ -656,7 +615,7 @@
 
     <!-- Gerador de Títulos -->
     <section class="insights-section">
-      <h3 class="section-title">Create Search Insights</h3>
+      <h3 class="section-title">Gerador de Títulos Virais</h3>
       <div class="search-form">
         <div class="input-group">
           <label for="content-description">Descreva seu conteúdo</label>
@@ -715,7 +674,7 @@
         </div>
         <!-- Loader para agendamento -->
         <div id="ai-loader-schedule" style="display: none; color: #69C9D0;">Carregando...</div>
-        <div class="ai-boost-option">
+        <div class="ai-boost-option" style="margin: 20px 0; display: flex; align-items: center; gap: 12px; background: rgba(105, 201, 208, 0.1); padding: 12px; border-radius: 8px;">
           <input type="checkbox" id="ai-boost" checked>
           <label for="ai-boost">Usar IA avançada para análise de tendências em tempo real</label>
         </div>
@@ -769,7 +728,7 @@
           </div>
         </div>
         <p style="margin-top: 1rem; text-align: center;">
-          Horário recomendado: <strong><span id="best-time-display">15:00</span></strong> - <span id="ai-recommendation">Melhor período para o seu tipo de conteúdo com 87% mais chances de engajamento</span>
+          Horário recomendado: <strong><span id="best-time-display" style="color: var(--tiktok-red);">15:00</span></strong> - <span id="ai-recommendation">Melhor período para o seu tipo de conteúdo com 87% mais chances de engajamento</span>
         </p>
       </div>
     </section>
@@ -780,6 +739,114 @@
   </footer>
 
   <script>
+    // Language selector functionality
+    const languages = {
+      'pt-BR': {
+        startTour: 'Começar Tour',
+        welcome: 'Bem-vindo ao TikBoost'
+      },
+      'en-US': {
+        startTour: 'Start Tour',
+        welcome: 'Welcome to TikBoost'
+      },
+      'es-ES': {
+        startTour: 'Iniciar Tour',
+        welcome: 'Bienvenido a TikBoost'
+      }
+    };
+    
+    // Onboarding Tour
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create onboarding overlay with welcome content
+      const overlay = document.createElement('div');
+      overlay.id = 'onboarding-overlay';
+      overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        text-align: center;
+        transition: opacity 0.5s ease;
+      `;
+      
+      // Welcome content
+      const welcomeContent = document.createElement('div');
+      welcomeContent.className = 'welcome-content';
+      welcomeContent.style.cssText = `
+        max-width: 600px;
+        padding: 50px;
+        background: linear-gradient(135deg, #121212, #1e1e1e);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(105, 201, 208, 0.3);
+      `;
+      
+      welcomeContent.innerHTML = `
+        <div style="margin-bottom: 30px;">
+          <div style="width: 90px; height: 90px; background: linear-gradient(45deg, var(--tiktok-blue), var(--tiktok-red)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 32px; margin: 0 auto 25px; box-shadow: 0 10px 25px rgba(238, 29, 82, 0.4);">TB</div>
+          <h1 style="font-size: 2.5rem; margin-bottom: 20px;" id="welcome-text">Bem-vindo ao TikBoost</h1>
+          <p style="font-size: 1.2rem; margin-bottom: 30px; color: #ccc;">A plataforma completa para impulsionar seu conteúdo no TikTok e maximizar seu alcance</p>
+        </div>
+        <div style="margin-bottom: 30px;">
+          <p style="margin-bottom: 15px;">Com o TikBoost você pode:</p>
+          <ul style="text-align: left; margin-bottom: 20px;">
+            <li style="margin-bottom: 10px;">✓ Gerar hashtags otimizadas para maior alcance</li>
+            <li style="margin-bottom: 10px;">✓ Criar títulos atraentes com IA avançada</li>
+            <li style="margin-bottom: 10px;">✓ Descobrir os melhores horários para publicação</li>
+            <li style="margin-bottom: 10px;">✓ Analisar tendências em tempo real</li>
+          </ul>
+        </div>
+        <button id="continue-btn" style="background: linear-gradient(90deg, var(--tiktok-blue), var(--tiktok-red)); color: white; border: none; padding: 16px 36px; border-radius: 30px; font-size: 1.2rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 20px rgba(238, 29, 82, 0.3);">Começar a Explorar</button>
+      `;
+      
+      overlay.appendChild(welcomeContent);
+      document.body.appendChild(overlay);
+      
+      // Continue button event
+      document.getElementById('continue-btn').addEventListener('click', function() {
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          // Scroll to the first section
+          const searchSection = document.querySelector('.search-section');
+          if (searchSection)
+            searchSection.scrollIntoView({ behavior: 'smooth' });
+          overlay.remove();
+        }, 500);
+      });
+      
+      // Start tour button
+      const startTourBtn = document.getElementById('start-tour');
+      if (startTourBtn) {
+        startTourBtn.addEventListener('click', function() {
+          overlay.style.opacity = '1';
+          document.body.appendChild(overlay);
+        });
+      }
+      
+      // Add language selector to header
+      const header = document.querySelector('header');
+      const langSelector = document.createElement('div');
+      langSelector.className = 'lang-selector';
+      langSelector.innerHTML = `
+        <select id="language-select"><option value="pt-BR">Português</option>
+          <option value="en-US">English</option>
+          <option value="es-ES">Español</option>
+        </select>
+      `;
+      
+      if (header) {
+        header.insertBefore(langSelector, document.querySelector('.theme-switch'));
+      }
+    });
+    
     // Configuração da API Gemini
     const GEMINI_API_KEY = "AIzaSyB1T0zW-6RVjbbK5b0PdGkUstVJVtZQw84"; // Substitua pela sua chave de API real
     
@@ -801,12 +868,31 @@
         document.body.classList.add('light-mode');
         document.getElementById('theme-toggle').checked = true;
       }
+      
+      // Language selector functionality
+      const languageSelect = document.getElementById('language-select');
+      if (languageSelect) {
+        languageSelect.addEventListener('change', function() {          
+          const selectedLang = this.value;          
+          if (languages[selectedLang]) {            
+            try {
+              const welcomeText = document.getElementById('welcome-text');
+              const startTourBtn = document.getElementById('start-tour');
+              const continueBtn = document.getElementById('continue-btn');
+              if (welcomeText && languages[selectedLang].welcome) welcomeText.textContent = languages[selectedLang].welcome;
+              if (startTourBtn && languages[selectedLang].startTour) startTourBtn.textContent = languages[selectedLang].startTour;
+              // Add more text elements to translate as needed
+            } catch (e) { console.log("Language update error:", e); }
+          }
+        });
+      }
     });
     
     const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
     // Função para gerar conteúdo com a Gemini AI
     async function generateWithGeminiAI(promptType, userInputs) {
+      if (!userInputs) return null;
       try {
         let prompt = "";
         if (promptType === "hashtags") {
@@ -1019,8 +1105,9 @@ O formato deve ser exatamente: "8:00|40,10:00|50,12:00|60,15:00|90,18:00|85,20:0
               // Enhanced AI recommendation text
               if (useAIBoost) {
                 const engagementPercent = Math.floor(85 + Math.random() * 10);
-                document.getElementById('ai-recommendation').textContent = 
+                document.getElementById('ai-recommendation').textContent =
                   `Análise avançada indica ${engagementPercent}% mais chances de engajamento neste horário para seu nicho específico`;
+                document.getElementById('ai-recommendation').style.fontWeight = '600';
               }
             }
             
@@ -1037,7 +1124,7 @@ O formato deve ser exatamente: "8:00|40,10:00|50,12:00|60,15:00|90,18:00|85,20:0
       const hashtags = Array.from(document.querySelectorAll('.hashtag'))
         .map(hashtag => hashtag.textContent)
         .join(' ');
-      navigator.clipboard.writeText(hashtags)
+      if (hashtags) navigator.clipboard.writeText(hashtags)
         .then(() => alert('Hashtags copiadas para a área de transferência!'))
         .catch(err => alert('Erro ao copiar: ' + err));
     }
