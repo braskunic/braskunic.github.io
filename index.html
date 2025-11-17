@@ -60,17 +60,29 @@
             z-index: 2;
             text-align: center;
             padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
         }
 
         .card {
             background: white;
             border-radius: 30px;
-            padding: 50px 40px;
+            padding: 30px 20px;
             box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4);
+            width: 100%;
             max-width: 500px;
+            margin: 0 auto;
             position: relative;
             animation: appear 1s ease-out;
             border: 5px solid #ff69b4;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 50px 40px;
+            }
         }
 
         @keyframes appear {
@@ -101,17 +113,30 @@
 
         h1 {
             color: #ff1493;
-            font-size: 36px;
+            font-size: 28px;
             margin: 20px 0;
             text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
         }
 
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+        }
+
         .name {
             color: #ff69b4;
-            font-size: 48px;
+            font-size: 36px;
             font-weight: bold;
             margin: 15px 0;
             animation: glow 2s infinite alternate;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .name {
+                font-size: 48px;
+            }
         }
 
         @keyframes glow {
@@ -125,23 +150,41 @@
 
         .message {
             color: #666;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.6;
             margin: 25px 0;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .message {
+                font-size: 18px;
+            }
         }
 
         .button {
             background: linear-gradient(135deg, #ff69b4, #ff1493);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 20px;
+            padding: 12px 30px;
+            font-size: 18px;
             border-radius: 50px;
             cursor: pointer;
             margin-top: 20px;
             box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
             transition: all 0.3s;
             font-family: 'Comic Sans MS', cursive;
+            width: 100%;
+            max-width: 300px;
+            touch-action: manipulation;
+        }
+
+        @media (min-width: 768px) {
+            .button {
+                padding: 15px 40px;
+                font-size: 20px;
+                width: auto;
+            }
         }
 
         .button:hover {
@@ -188,10 +231,18 @@
 <body>
     <div class="hearts" id="hearts"></div>
     
+    <!-- Música de fundo oculta -->
+    <iframe 
+        style="display:none;" 
+        src="https://www.youtube.com/embed/dvy01-W9lN4?autoplay=1&loop=1&playlist=dvy01-W9lN4" 
+        allow="autoplay" 
+        id="backgroundMusic">
+    </iframe>
+    
     <div class="container">
         <div class="card">
             <div style="margin: 20px 0;">
-                <img src="https://www.pngarts.com/files/17/Hello-Kitty-Christmas-PNG-Image.png" alt="Hello Kitty" style="width: 150px; height: auto; animation: bounce 2s infinite;">
+                <img src="https://imgs.search.brave.com/QFF3DxPybe8casuaBfUqkrPX4A45fxsP_5NRBMy_cZA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYXJ0cy5jb20v/ZmlsZXMvMTEvUGlu/ay1IZWxsby1LaXR0/eS1QTkctSW1hZ2Uu/cG5n" alt="Hello Kitty" style="width: 120px; height: auto; max-width: 100%; animation: bounce 2s infinite;">
             </div>
             
             <h1>Mensagem Especial</h1>
