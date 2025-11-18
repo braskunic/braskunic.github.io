@@ -29,8 +29,6 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
-            top: 0;
-            left: 0;
         }
 
         .heart {
@@ -177,12 +175,8 @@
             box-shadow: 0 6px 25px rgba(255, 105, 180, 0.5);
         }
 
-        .button:active {
-            transform: scale(0.98);
-        }
-
         .hidden {
-            display: none !important;
+            display: none;
         }
 
         .surprise {
@@ -205,110 +199,6 @@
             padding: 15px;
             line-height: 1.9;
         }
-
-        .simple-text p {
-            margin-bottom: 18px;
-        }
-
-        .game-section {
-            text-align: center;
-            margin-top: 25px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
-            border-radius: 20px;
-            border: 3px solid #ff69b4;
-        }
-
-        .game-board {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            max-width: 280px;
-            margin: 20px auto;
-        }
-
-        @media (min-width: 768px) {
-            .game-board {
-                max-width: 300px;
-                gap: 10px;
-            }
-        }
-
-        .cell {
-            width: 100%;
-            aspect-ratio: 1;
-            max-width: 90px;
-            background: white;
-            border: 3px solid #ff69b4;
-            border-radius: 10px;
-            font-size: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: bold;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .cell {
-                font-size: 40px;
-            }
-        }
-
-        .cell:hover:not(.disabled) {
-            background: #ffe4e1;
-            transform: scale(1.05);
-        }
-
-        .cell:active:not(.disabled) {
-            transform: scale(0.95);
-        }
-
-        .cell.disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .game-info {
-            font-size: 18px;
-            color: #ff1493;
-            font-weight: bold;
-            margin: 15px 0;
-            min-height: 30px;
-        }
-
-        .score {
-            display: flex;
-            justify-content: space-around;
-            max-width: 300px;
-            margin: 15px auto;
-            font-size: 16px;
-            gap: 10px;
-        }
-
-        .score-item {
-            padding: 10px 20px;
-            background: white;
-            border-radius: 10px;
-            border: 2px solid #ff69b4;
-            flex: 1;
-        }
-
-        .final-question {
-            text-align: center;
-            margin-top: 25px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
-            border-radius: 20px;
-            border: 3px solid #ff69b4;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-        }
     </style>
 </head>
 <body>
@@ -317,7 +207,7 @@
     <div class="container">
         <div class="card">
             <div style="margin: 15px 0;">
-                <img src="https://www.pngarts.com/files/11/Pink-Hello-Kitty-PNG-Image.png" alt="Hello Kitty" style="width: 100px; animation: bounce 2s infinite;" onerror="this.style.display='none'">
+                <img src="https://www.pngarts.com/files/11/Pink-Hello-Kitty-PNG-Image.png" alt="Hello Kitty" style="width: 100px; height: auto; max-width: 100%; animation: bounce 2s infinite;">
             </div>
             
             <h1>Oi, Yasmin! 💕</h1>
@@ -328,46 +218,56 @@
             </div>
             
             <div class="message simple-text hidden surprise" id="message2">
-                <p>Você sabe que é uma pessoa incrível, né?</p>
+                <p style="margin-bottom: 18px;">
+                    Você sabe que é uma pessoa incrível, né?
+                </p>
                 
-                <p>Sua risada ilumina qualquer lugar,<br>
-                e seu jeito meigo deixa tudo mais leve. 🌟</p>
+                <p style="margin-bottom: 18px;">
+                    Sua risada ilumina qualquer lugar,<br>
+                    e seu jeito meigo deixa tudo mais leve. 🌟
+                </p>
                 
-                <p>Você gosta de Hello Kitty porque ela é fofa?<br>
-                Acho que vocês têm muito em comum então... 😊</p>
+                <p style="margin-bottom: 18px;">
+                    Você gosta de Hello Kitty porque ela é fofa?<br>
+                    Acho que vocês têm muito em comum então... 😊
+                </p>
                 
-                <p>Cada momento com você é especial,<br>
-                e você faz os dias serem mais coloridos! 🎨</p>
+                <p style="margin-bottom: 18px;">
+                    Cada momento com você é especial,<br>
+                    e você faz os dias serem mais coloridos! 🎨
+                </p>
                 
-                <p style="color: #ff1493;">
+                <p style="margin-bottom: 18px; color: #ff1493;">
                     Mas tem algo que eu preciso te perguntar...<br>
                     <em style="font-size: 14px;">Olha o botão aí embaixo 👇</em>
                 </p>
             </div>
             
-            <button class="button" id="btn" type="button">
+            <button class="button" id="btn" onclick="showMessage()">
                 ✨ Clique Aqui
             </button>
             
-            <button class="button hidden" id="btn2" type="button" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 12px;">
+            <button class="button hidden" id="btn2" onclick="startGame()" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 12px;">
                 🚫 NÃO Clique!
             </button>
             
-            <div class="game-section hidden surprise" id="gameSection">
-                <div class="game-info" id="gameInfo">🎮 Vamos jogar Jogo da Velha!</div>
-                <div class="score">
-                    <div class="score-item">Bot: <span id="botScore">0</span></div>
-                    <div class="score-item">Você: <span id="playerScore">0</span></div>
+            <div class="message hidden surprise" id="gameSection" style="text-align: center; margin-top: 25px; padding: 30px 20px; background: linear-gradient(135deg, #ffe4e1, #ffc0cb); border-radius: 20px; border: 3px solid #ff69b4;">
+                <div style="font-size: 20px; margin-bottom: 15px; color: #ff1493; font-weight: bold;">
+                    🎮 Jogo da Memória dos Corações
                 </div>
-                <div class="game-board" id="gameBoard"></div>
-                <div style="margin-top: 15px; font-size: 14px; color: #666;">
-                    Você é: ❤️ | Bot é: 💙
+                <div id="gameInfo" style="margin-bottom: 20px; font-size: 16px; color: #666;">
+                    Encontre os pares! 💕
+                </div>
+                <div id="memoryBoard" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 320px; margin: 0 auto;">
+                </div>
+                <div style="margin-top: 20px; font-size: 18px; color: #ff1493; font-weight: bold;">
+                    Tentativas: <span id="attempts">0</span>
                 </div>
             </div>
             
-            <div class="final-question hidden surprise" id="finalQuestion">
+            <div class="message hidden surprise" id="finalQuestion" style="text-align: center; margin-top: 25px; padding: 30px 20px; background: linear-gradient(135deg, #ffe4e1, #ffc0cb); border-radius: 20px; border: 3px solid #ff69b4;">
                 <div style="font-size: 22px; margin-bottom: 18px; color: #ff1493;">
-                    💕 Você ganhou! Então...
+                    💕 Você conseguiu! Então...
                 </div>
                 <div style="font-size: 24px; color: #c71585; font-weight: bold; line-height: 1.6;">
                     Quer namorar comigo?
@@ -380,297 +280,41 @@
     </div>
 
     <script>
-        (function() {
-            'use strict';
-
-            // Criar corações flutuantes
-            function createHeart() {
-                const hearts = ['💗', '💖', '💕', '💝', '🎀', '🌸'];
-                const heartsContainer = document.getElementById('hearts');
-                
-                if (!heartsContainer) return;
-                
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.animationDelay = Math.random() * 5 + 's';
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                heartsContainer.appendChild(heart);
-                
-                setTimeout(function() {
-                    if (heart.parentNode) {
-                        heart.parentNode.removeChild(heart);
-                    }
-                }, 8000);
-            }
-
-            setInterval(createHeart, 300);
-
-            // Mostrar mensagem
-            function showMessage() {
-                const msg1 = document.getElementById('message1');
-                const msg2 = document.getElementById('message2');
-                const btn = document.getElementById('btn');
-                const btn2 = document.getElementById('btn2');
-                
-                if (msg1) msg1.classList.add('hidden');
-                if (msg2) msg2.classList.remove('hidden');
-                if (btn) btn.classList.add('hidden');
-                if (btn2) btn2.classList.remove('hidden');
-                
-                for (let i = 0; i < 20; i++) {
-                    setTimeout(createHeart, i * 100);
-                }
-            }
-
-            // Variáveis do jogo
-            let board = [];
-            let currentPlayer = '❤️';
-            let gameActive = false;
-            let gamesPlayed = 0;
-            let botWins = 0;
-            let playerWins = 0;
-
-            function startGame() {
-                const msg2 = document.getElementById('message2');
-                const btn2 = document.getElementById('btn2');
-                const gameSection = document.getElementById('gameSection');
-                
-                if (msg2) msg2.classList.add('hidden');
-                if (btn2) btn2.classList.add('hidden');
-                if (gameSection) gameSection.classList.remove('hidden');
-                
-                initGame();
-            }
-
-            function initGame() {
-                board = ['', '', '', '', '', '', '', '', ''];
-                currentPlayer = '❤️';
-                gameActive = true;
-                
-                const gameBoard = document.getElementById('gameBoard');
-                if (!gameBoard) return;
-                
-                gameBoard.innerHTML = '';
-                
-                for (let i = 0; i < 9; i++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-                    cell.dataset.index = i;
-                    cell.onclick = (function(index) {
-                        return function() { handleCellClick(index); };
-                    })(i);
-                    gameBoard.appendChild(cell);
-                }
-                
-                const gameInfo = document.getElementById('gameInfo');
-                if (gameInfo) {
-                    if (gamesPlayed < 2) {
-                        gameInfo.textContent = 'Rodada ' + (gamesPlayed + 1) + ' - Sua vez!';
-                    } else {
-                        gameInfo.textContent = 'Última rodada! Você consegue! 💪';
-                    }
-                }
-            }
-
-            function handleCellClick(index) {
-                if (!gameActive || board[index] !== '') return;
-                
-                board[index] = currentPlayer;
-                updateBoard();
-                
-                if (checkWinner()) {
-                    handleGameEnd('player');
-                    return;
-                }
-                
-                if (isBoardFull()) {
-                    handleGameEnd('draw');
-                    return;
-                }
-                
-                currentPlayer = '💙';
-                const gameInfo = document.getElementById('gameInfo');
-                if (gameInfo) gameInfo.textContent = 'Bot está pensando...';
-                
-                setTimeout(function() {
-                    botMove();
-                }, 500);
-            }
-
-            function botMove() {
-                if (!gameActive) return;
-                
-                let move;
-                
-                if (gamesPlayed < 2) {
-                    move = getBestMove();
-                } else {
-                    move = getWeakMove();
-                }
-                
-                if (move === -1) return;
-                
-                board[move] = '💙';
-                updateBoard();
-                
-                if (checkWinner()) {
-                    handleGameEnd('bot');
-                    return;
-                }
-                
-                if (isBoardFull()) {
-                    handleGameEnd('draw');
-                    return;
-                }
-                
-                currentPlayer = '❤️';
-                const gameInfo = document.getElementById('gameInfo');
-                if (gameInfo) gameInfo.textContent = 'Sua vez!';
-            }
-
-            function getBestMove() {
-                // Tenta ganhar
-                for (let i = 0; i < 9; i++) {
-                    if (board[i] === '') {
-                        board[i] = '💙';
-                        if (checkWinner()) {
-                            board[i] = '';
-                            return i;
-                        }
-                        board[i] = '';
-                    }
-                }
-                
-                // Bloqueia jogador
-                for (let i = 0; i < 9; i++) {
-                    if (board[i] === '') {
-                        board[i] = '❤️';
-                        if (checkWinner()) {
-                            board[i] = '';
-                            return i;
-                        }
-                        board[i] = '';
-                    }
-                }
-                
-                // Prioriza centro e cantos
-                const priorities = [4, 0, 2, 6, 8, 1, 3, 5, 7];
-                for (let i = 0; i < priorities.length; i++) {
-                    if (board[priorities[i]] === '') return priorities[i];
-                }
-                
-                return getFirstEmptyCell();
-            }
-
-            function getWeakMove() {
-                const emptySpots = [];
-                for (let i = 0; i < board.length; i++) {
-                    if (board[i] === '') emptySpots.push(i);
-                }
-                
-                if (emptySpots.length === 0) return -1;
-                
-                return emptySpots[Math.floor(Math.random() * emptySpots.length)];
-            }
-
-            function getFirstEmptyCell() {
-                for (let i = 0; i < board.length; i++) {
-                    if (board[i] === '') return i;
-                }
-                return -1;
-            }
-
-            function isBoardFull() {
-                for (let i = 0; i < board.length; i++) {
-                    if (board[i] === '') return false;
-                }
-                return true;
-            }
-
-            function updateBoard() {
-                const cells = document.querySelectorAll('.cell');
-                cells.forEach(function(cell, index) {
-                    cell.textContent = board[index];
-                    if (board[index] !== '') {
-                        cell.classList.add('disabled');
-                    }
-                });
-            }
-
-            function checkWinner() {
-                const winPatterns = [
-                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
-                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-                    [0, 4, 8], [2, 4, 6]
-                ];
-                
-                for (let i = 0; i < winPatterns.length; i++) {
-                    const pattern = winPatterns[i];
-                    const a = pattern[0];
-                    const b = pattern[1];
-                    const c = pattern[2];
-                    
-                    if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
-                        return true;
-                    }
-                }
-                
-                return false;
-            }
-
-            function handleGameEnd(winner) {
-                gameActive = false;
-                gamesPlayed++;
-                
-                const gameInfo = document.getElementById('gameInfo');
-                const botScoreEl = document.getElementById('botScore');
-                const playerScoreEl = document.getElementById('playerScore');
-                
-                if (winner === 'player') {
-                    playerWins++;
-                    if (playerScoreEl) playerScoreEl.textContent = playerWins;
-                    
-                    if (gamesPlayed >= 3) {
-                        setTimeout(function() {
-                            const gameSection = document.getElementById('gameSection');
-                            const finalQuestion = document.getElementById('finalQuestion');
-                            
-                            if (gameSection) gameSection.classList.add('hidden');
-                            if (finalQuestion) finalQuestion.classList.remove('hidden');
-                            
-                            for (let i = 0; i < 50; i++) {
-                                setTimeout(createHeart, i * 50);
-                            }
-                        }, 1500);
-                    } else {
-                        if (gameInfo) gameInfo.textContent = '🎉 Você ganhou essa! Vamos de novo!';
-                        setTimeout(initGame, 2000);
-                    }
-                } else if (winner === 'bot') {
-                    botWins++;
-                    if (botScoreEl) botScoreEl.textContent = botWins;
-                    if (gameInfo) gameInfo.textContent = '😅 Bot ganhou! Não desista!';
-                    setTimeout(initGame, 2000);
-                } else {
-                    if (gameInfo) gameInfo.textContent = '🤝 Empate! Vamos de novo!';
-                    setTimeout(initGame, 2000);
-                }
-            }
-
-            // Event listeners
-            const btn = document.getElementById('btn');
-            const btn2 = document.getElementById('btn2');
+        function createHeart() {
+            const hearts = ['💗', '💖', '💕', '💝', '🎀', '🌸'];
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.getElementById('hearts').appendChild(heart);
             
-            if (btn) {
-                btn.addEventListener('click', showMessage);
-            }
+            setTimeout(() => heart.remove(), 8000);
+        }
+
+        setInterval(createHeart, 300);
+
+        function showMessage() {
+            document.getElementById('message1').classList.add('hidden');
+            document.getElementById('message2').classList.remove('hidden');
+            document.getElementById('btn').classList.add('hidden');
+            document.getElementById('btn2').classList.remove('hidden');
             
-            if (btn2) {
-                btn2.addEventListener('click', startGame);
+            for(let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 100);
             }
-        })();
+        }
+        
+        function showQuestion() {
+            document.getElementById('message2').classList.add('hidden');
+            document.getElementById('btn2').classList.add('hidden');
+            document.getElementById('finalQuestion').classList.remove('hidden');
+            
+            for(let i = 0; i < 50; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
     </script>
 </body>
 </html>
