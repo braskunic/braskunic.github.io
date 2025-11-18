@@ -1,1 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Yasmin 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ff69b4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 8s infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            animation: appear 1s ease-out;
+            border: 3px solid #ff69b4;
+            box-sizing: border-box;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 40px 35px;
+            }
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        h1 {
+            color: #ff1493;
+            font-size: 26px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
+        }
+
+        .name {
+            color: #ff69b4;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 15px 0;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .name {
+                font-size: 40px;
+            }
+        }
+
+        .message {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.7;
+            margin: 20px 0;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .message {
+                font-size: 17px;
+            }
+        }
+
+        .button {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            font-size: 17px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 280px;
+            touch-action: manipulation;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .button {
+                padding: 15px 40px;
+                font-size: 18px;
+                width: auto;
+            }
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 105, 180, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .surprise {
+            animation: surprise 0.5s ease-out;
+        }
+
+        @keyframes surprise {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .simple-text {
+            text-align: center;
+            padding: 15px;
+            line-height: 1.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <!-- Música de fundo oculta -->
+    <iframe 
+        style="display:none;" 
+        src="https://www.youtube.com/embed/dvy01-W9lN4?autoplay=1&loop=1&playlist=dvy01-W9lN4" 
+        allow="autoplay" 
+        id="backgroundMusic">
+    </iframe>
+    
+    <div class="container">
+        <div class="card">
+            <div style="margin: 15px 0;">
+                <img src="https://imgs.search.brave.com/QFF3DxPybe8casuaBfUqkrPX4A45fxsP_5NRBMy_cZA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYXJ0cy5jb20v/ZmlsZXMvMTEvUGlu/ay1IZWxsby1LaXR0/eS1QTkctSW1hZ2Uu/cG5n" alt="Hello Kitty" style="width: 100px; height: auto; max-width: 100%; animation: bounce 2s infinite;">
+            </div>
+            
+            <h1>Oi, Yasmin! 💕</h1>
+            
+            <div class="message" id="message1">
+                Preparei algo especial pra você...<br>
+                Clica aqui embaixo! 🌸
+            </div>
+            
+            <div class="message simple-text hidden surprise" id="message2">
+                <p style="margin-bottom: 18px;">
+                    Você sabe que é uma pessoa incrível, né?
+                </p>
+                
+                <p style="margin-bottom: 18px;">
+                    Sua risada ilumina qualquer lugar,<br>
+                    e seu jeito meigo deixa tudo mais leve. 🌟
+                </p>
+                
+                <p style="margin-bottom: 18px;">
+                    Você gosta de Hello Kitty porque ela é fofa?<br>
+                    Acho que vocês têm muito em comum então... 😊
+                </p>
+                
+                <p style="margin-bottom: 18px;">
+                    Cada momento com você é especial,<br>
+                    e você faz os dias serem mais coloridos! 🎨
+                </p>
+                
+                <p style="margin-bottom: 18px; color: #ff1493;">
+                    Mas tem algo que eu preciso te perguntar...<br>
+                    <em style="font-size: 14px;">Olha o botão aí embaixo 👇</em>
+                </p>
+            </div>
+            
+            <button class="button" id="btn" onclick="showMessage()">
+                ✨ Clique Aqui
+            </button>
+            
+            <button class="button hidden" id="btn2" onclick="showQuestion()" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 12px;">
+                🚫 NÃO Clique!
+            </button>
+            
+            <div class="message hidden surprise" id="finalQuestion" style="text-align: center; margin-top: 25px; padding: 30px 20px; background: linear-gradient(135deg, #ffe4e1, #ffc0cb); border-radius: 20px; border: 3px solid #ff69b4;">
+                <div style="font-size: 22px; margin-bottom: 18px; color: #ff1493;">
+                    💕 Então...
+                </div>
+                <div style="font-size: 24px; color: #c71585; font-weight: bold; line-height: 1.6;">
+                    Quer namorar comigo?
+                </div>
+                <div style="margin-top: 25px; font-size: 45px;">
+                    💝
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createHeart() {
+            const hearts = ['💗', '💖', '💕', '💝', '🎀', '🌸'];
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.getElementById('hearts').appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 8000);
+        }
+
+        setInterval(createHeart, 300);
+
+        function showMessage() {
+            const msg1 = document.getElementById('message1');
+            const msg2 = document.getElementById('message2');
+            const btn = document.getElementById('btn');
+            const btn2 = document.getElementById('btn2');
+            
+            msg1.classList.add('hidden');
+            msg2.classList.remove('hidden');
+            btn.classList.add('hidden');
+            btn2.classList.remove('hidden');
+            
+            for(let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+        
+        function showQuestion() {
+            const msg2 = document.getElementById('message2');
+            const btn2 = document.getElementById('btn2');
+            const finalQ = document.getElementById('finalQuestion');
+            
+            msg2.classList.add('hidden');
+            btn2.classList.add('hidden');
+            finalQ.classList.remove('hidden');
+            
+            for(let i = 0; i < 50; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>
