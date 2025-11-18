@@ -12,13 +12,15 @@
         }
 
         body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ff69b4 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 20px 0;
         }
 
         .hearts {
@@ -27,6 +29,8 @@
             height: 100%;
             pointer-events: none;
             z-index: 1;
+            top: 0;
+            left: 0;
         }
 
         .heart {
@@ -58,23 +62,34 @@
             z-index: 2;
             text-align: center;
             padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
         }
 
         .card {
             background: white;
-            border-radius: 30px;
-            padding: 50px 40px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.4);
+            border-radius: 25px;
+            padding: 30px 20px;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.3);
+            width: 100%;
             max-width: 500px;
+            margin: 0 auto;
             position: relative;
             animation: appear 1s ease-out;
-            border: 5px solid #ff69b4;
+            border: 3px solid #ff69b4;
+        }
+
+        @media (min-width: 768px) {
+            .card {
+                padding: 40px 35px;
+            }
         }
 
         @keyframes appear {
             from {
                 opacity: 0;
-                transform: scale(0.8) translateY(50px);
+                transform: scale(0.9) translateY(30px);
             }
             to {
                 opacity: 1;
@@ -82,73 +97,92 @@
             }
         }
 
-        .hello-kitty {
-            font-size: 80px;
-            animation: bounce 2s infinite;
-            display: inline-block;
-        }
-
         @keyframes bounce {
             0%, 100% {
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(-20px);
+                transform: translateY(-15px);
             }
         }
 
         h1 {
             color: #ff1493;
-            font-size: 36px;
+            font-size: 26px;
             margin: 20px 0;
-            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 32px;
+            }
         }
 
         .name {
             color: #ff69b4;
-            font-size: 48px;
+            font-size: 32px;
             font-weight: bold;
             margin: 15px 0;
-            animation: glow 2s infinite alternate;
+            word-wrap: break-word;
         }
 
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4;
-            }
-            to {
-                text-shadow: 0 0 20px #ff1493, 0 0 30px #ff1493;
+        @media (min-width: 768px) {
+            .name {
+                font-size: 40px;
             }
         }
 
         .message {
-            color: #666;
-            font-size: 18px;
-            line-height: 1.6;
-            margin: 25px 0;
+            color: #555;
+            font-size: 16px;
+            line-height: 1.7;
+            margin: 20px 0;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .message {
+                font-size: 17px;
+            }
         }
 
         .button {
             background: linear-gradient(135deg, #ff69b4, #ff1493);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 20px;
+            padding: 14px 35px;
+            font-size: 17px;
             border-radius: 50px;
             cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
             transition: all 0.3s;
-            font-family: 'Comic Sans MS', cursive;
+            width: 100%;
+            max-width: 280px;
+            touch-action: manipulation;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .button {
+                padding: 15px 40px;
+                font-size: 18px;
+                width: auto;
+            }
         }
 
         .button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(255, 105, 180, 0.6);
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 105, 180, 0.5);
+        }
+
+        .button:active {
+            transform: scale(0.98);
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .surprise {
@@ -166,20 +200,114 @@
             }
         }
 
-        .bow {
-            color: #ff1493;
-            font-size: 40px;
-            display: inline-block;
-            animation: wiggle 1s infinite;
+        .simple-text {
+            text-align: center;
+            padding: 15px;
+            line-height: 1.9;
         }
 
-        @keyframes wiggle {
-            0%, 100% {
-                transform: rotate(-5deg);
+        .simple-text p {
+            margin-bottom: 18px;
+        }
+
+        .game-section {
+            text-align: center;
+            margin-top: 25px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
+            border-radius: 20px;
+            border: 3px solid #ff69b4;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            max-width: 280px;
+            margin: 20px auto;
+        }
+
+        @media (min-width: 768px) {
+            .game-board {
+                max-width: 300px;
+                gap: 10px;
             }
-            50% {
-                transform: rotate(5deg);
+        }
+
+        .cell {
+            width: 100%;
+            aspect-ratio: 1;
+            max-width: 90px;
+            background: white;
+            border: 3px solid #ff69b4;
+            border-radius: 10px;
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .cell {
+                font-size: 40px;
             }
+        }
+
+        .cell:hover:not(.disabled) {
+            background: #ffe4e1;
+            transform: scale(1.05);
+        }
+
+        .cell:active:not(.disabled) {
+            transform: scale(0.95);
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .game-info {
+            font-size: 18px;
+            color: #ff1493;
+            font-weight: bold;
+            margin: 15px 0;
+            min-height: 30px;
+        }
+
+        .score {
+            display: flex;
+            justify-content: space-around;
+            max-width: 300px;
+            margin: 15px auto;
+            font-size: 16px;
+            gap: 10px;
+        }
+
+        .score-item {
+            padding: 10px 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ff69b4;
+            flex: 1;
+        }
+
+        .final-question {
+            text-align: center;
+            margin-top: 25px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
+            border-radius: 20px;
+            border: 3px solid #ff69b4;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -188,130 +316,361 @@
     
     <div class="container">
         <div class="card">
-            <div class="hello-kitty">🎀</div>
-            <div class="hello-kitty">😺</div>
-            <div class="hello-kitty">🎀</div>
+            <div style="margin: 15px 0;">
+                <img src="https://www.pngarts.com/files/11/Pink-Hello-Kitty-PNG-Image.png" alt="Hello Kitty" style="width: 100px; animation: bounce 2s infinite;" onerror="this.style.display='none'">
+            </div>
             
-            <h1>Mensagem Especial</h1>
-            
-            <div class="name">Yasmin</div>
+            <h1>Oi, Yasmin! 💕</h1>
             
             <div class="message" id="message1">
-                Você é uma pessoa incrível! ✨<br>
-                Sua meiguice e doçura iluminam meus dias 🌸<br>
-                Como a Hello Kitty, você é fofa e especial! 💕
+                Preparei algo especial pra você...<br>
+                Clica aqui embaixo! 🌸
             </div>
             
-            <div class="message hidden surprise" id="message2" style="text-align: left; padding: 20px;">
-                <div class="bow" style="text-align: center;">🎀</div><br>
-                <p style="margin-bottom: 15px;">Yasmin,</p>
+            <div class="message simple-text hidden surprise" id="message2">
+                <p>Você sabe que é uma pessoa incrível, né?</p>
                 
-                <p style="margin-bottom: 15px;">
-                    Cada momento com você é único...<br>
-                    Você faz o mundo mais colorido e feliz!
-                </p>
+                <p>Sua risada ilumina qualquer lugar,<br>
+                e seu jeito meigo deixa tudo mais leve. 🌟</p>
                 
-                <p style="margin-bottom: 15px;">
-                    Sabe, tenho que confessar algo:<br>
-                    <strong>Yasmin, você não é Canaã, mas é minha terra prometida</strong> AKAKKAKAAKAKAK 😄
-                </p>
+                <p>Você gosta de Hello Kitty porque ela é fofa?<br>
+                Acho que vocês têm muito em comum então... 😊</p>
                 
-                <p style="margin-bottom: 15px;">
-                    Mas falando sério agora...<br>
-                    Eu te amo como a lua ama a noite 🌙✨<br>
-                    Seu brilho ilumina meus dias mais escuros,<br>
-                    e mesmo quando não posso ver você,<br>
-                    sei que está lá, sempre presente.
-                </p>
+                <p>Cada momento com você é especial,<br>
+                e você faz os dias serem mais coloridos! 🎨</p>
                 
-                <p style="margin-bottom: 15px;">
-                    Mas tenho algo importante pra te dizer...<br>
-                    <em style="color: #ff1493;">Continue lendo abaixo 👇</em>
+                <p style="color: #ff1493;">
+                    Mas tem algo que eu preciso te perguntar...<br>
+                    <em style="font-size: 14px;">Olha o botão aí embaixo 👇</em>
                 </p>
-                
-                <p style="text-align: right; margin-top: 20px;">
-                    Com todo meu amor 💕
-                </p>
-                <div class="bow" style="text-align: center;">🎀</div>
             </div>
             
-            <button class="button" id="btn" onclick="revealSurprise()">
-                Clique Aqui! 💝
+            <button class="button" id="btn" type="button">
+                ✨ Clique Aqui
             </button>
             
-            <button class="button hidden" id="btn2" onclick="revealQuestion()" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 10px;">
-                NÃO Clique Aqui! 😏
+            <button class="button hidden" id="btn2" type="button" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 12px;">
+                🚫 NÃO Clique!
             </button>
             
-            <div class="message hidden surprise" id="finalQuestion" style="text-align: center; margin-top: 30px; padding: 25px; background: linear-gradient(135deg, #ffe4e1, #ffb6c1); border-radius: 20px; border: 3px solid #ff69b4;">
-                <div style="font-size: 24px; margin-bottom: 15px;">✨ Já que clicou aqui... ✨</div>
-                <div style="font-size: 20px; color: #c71585; font-weight: bold; line-height: 1.8;">
-                    Yasmin, você me esperaria?<br>
-                    <span style="font-size: 18px; color: #666; font-weight: normal;">
-                        O tempo que fosse necessário<br>
-                        para que nós dois estivéssemos juntos? 💕
-                    </span>
+            <div class="game-section hidden surprise" id="gameSection">
+                <div class="game-info" id="gameInfo">🎮 Vamos jogar Jogo da Velha!</div>
+                <div class="score">
+                    <div class="score-item">Bot: <span id="botScore">0</span></div>
+                    <div class="score-item">Você: <span id="playerScore">0</span></div>
                 </div>
-                <div style="margin-top: 20px; font-size: 40px;">
-                    ⏳ 💖 ✨
+                <div class="game-board" id="gameBoard"></div>
+                <div style="margin-top: 15px; font-size: 14px; color: #666;">
+                    Você é: ❤️ | Bot é: 💙
                 </div>
-                <div style="margin-top: 15px; font-size: 16px; color: #888; font-style: italic;">
-                    Porque eu te esperaria uma vida inteira... 🌙
+            </div>
+            
+            <div class="final-question hidden surprise" id="finalQuestion">
+                <div style="font-size: 22px; margin-bottom: 18px; color: #ff1493;">
+                    💕 Você ganhou! Então...
+                </div>
+                <div style="font-size: 24px; color: #c71585; font-weight: bold; line-height: 1.6;">
+                    Quer namorar comigo?
+                </div>
+                <div style="margin-top: 25px; font-size: 45px;">
+                    💝
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Criar corações flutuantes
-        function createHeart() {
-            const hearts = ['💗', '💖', '💕', '💝', '🎀', '🌸'];
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 5 + 's';
-            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-            document.getElementById('hearts').appendChild(heart);
-            
-            setTimeout(() => heart.remove(), 8000);
-        }
+        (function() {
+            'use strict';
 
-        setInterval(createHeart, 300);
+            // Criar corações flutuantes
+            function createHeart() {
+                const hearts = ['💗', '💖', '💕', '💝', '🎀', '🌸'];
+                const heartsContainer = document.getElementById('hearts');
+                
+                if (!heartsContainer) return;
+                
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(function() {
+                    if (heart.parentNode) {
+                        heart.parentNode.removeChild(heart);
+                    }
+                }, 8000);
+            }
 
-        // Revelar mensagem surpresa
-        function revealSurprise() {
-            const msg1 = document.getElementById('message1');
-            const msg2 = document.getElementById('message2');
+            setInterval(createHeart, 300);
+
+            // Mostrar mensagem
+            function showMessage() {
+                const msg1 = document.getElementById('message1');
+                const msg2 = document.getElementById('message2');
+                const btn = document.getElementById('btn');
+                const btn2 = document.getElementById('btn2');
+                
+                if (msg1) msg1.classList.add('hidden');
+                if (msg2) msg2.classList.remove('hidden');
+                if (btn) btn.classList.add('hidden');
+                if (btn2) btn2.classList.remove('hidden');
+                
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(createHeart, i * 100);
+                }
+            }
+
+            // Variáveis do jogo
+            let board = [];
+            let currentPlayer = '❤️';
+            let gameActive = false;
+            let gamesPlayed = 0;
+            let botWins = 0;
+            let playerWins = 0;
+
+            function startGame() {
+                const msg2 = document.getElementById('message2');
+                const btn2 = document.getElementById('btn2');
+                const gameSection = document.getElementById('gameSection');
+                
+                if (msg2) msg2.classList.add('hidden');
+                if (btn2) btn2.classList.add('hidden');
+                if (gameSection) gameSection.classList.remove('hidden');
+                
+                initGame();
+            }
+
+            function initGame() {
+                board = ['', '', '', '', '', '', '', '', ''];
+                currentPlayer = '❤️';
+                gameActive = true;
+                
+                const gameBoard = document.getElementById('gameBoard');
+                if (!gameBoard) return;
+                
+                gameBoard.innerHTML = '';
+                
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.index = i;
+                    cell.onclick = (function(index) {
+                        return function() { handleCellClick(index); };
+                    })(i);
+                    gameBoard.appendChild(cell);
+                }
+                
+                const gameInfo = document.getElementById('gameInfo');
+                if (gameInfo) {
+                    if (gamesPlayed < 2) {
+                        gameInfo.textContent = 'Rodada ' + (gamesPlayed + 1) + ' - Sua vez!';
+                    } else {
+                        gameInfo.textContent = 'Última rodada! Você consegue! 💪';
+                    }
+                }
+            }
+
+            function handleCellClick(index) {
+                if (!gameActive || board[index] !== '') return;
+                
+                board[index] = currentPlayer;
+                updateBoard();
+                
+                if (checkWinner()) {
+                    handleGameEnd('player');
+                    return;
+                }
+                
+                if (isBoardFull()) {
+                    handleGameEnd('draw');
+                    return;
+                }
+                
+                currentPlayer = '💙';
+                const gameInfo = document.getElementById('gameInfo');
+                if (gameInfo) gameInfo.textContent = 'Bot está pensando...';
+                
+                setTimeout(function() {
+                    botMove();
+                }, 500);
+            }
+
+            function botMove() {
+                if (!gameActive) return;
+                
+                let move;
+                
+                if (gamesPlayed < 2) {
+                    move = getBestMove();
+                } else {
+                    move = getWeakMove();
+                }
+                
+                if (move === -1) return;
+                
+                board[move] = '💙';
+                updateBoard();
+                
+                if (checkWinner()) {
+                    handleGameEnd('bot');
+                    return;
+                }
+                
+                if (isBoardFull()) {
+                    handleGameEnd('draw');
+                    return;
+                }
+                
+                currentPlayer = '❤️';
+                const gameInfo = document.getElementById('gameInfo');
+                if (gameInfo) gameInfo.textContent = 'Sua vez!';
+            }
+
+            function getBestMove() {
+                // Tenta ganhar
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === '') {
+                        board[i] = '💙';
+                        if (checkWinner()) {
+                            board[i] = '';
+                            return i;
+                        }
+                        board[i] = '';
+                    }
+                }
+                
+                // Bloqueia jogador
+                for (let i = 0; i < 9; i++) {
+                    if (board[i] === '') {
+                        board[i] = '❤️';
+                        if (checkWinner()) {
+                            board[i] = '';
+                            return i;
+                        }
+                        board[i] = '';
+                    }
+                }
+                
+                // Prioriza centro e cantos
+                const priorities = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+                for (let i = 0; i < priorities.length; i++) {
+                    if (board[priorities[i]] === '') return priorities[i];
+                }
+                
+                return getFirstEmptyCell();
+            }
+
+            function getWeakMove() {
+                const emptySpots = [];
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === '') emptySpots.push(i);
+                }
+                
+                if (emptySpots.length === 0) return -1;
+                
+                return emptySpots[Math.floor(Math.random() * emptySpots.length)];
+            }
+
+            function getFirstEmptyCell() {
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === '') return i;
+                }
+                return -1;
+            }
+
+            function isBoardFull() {
+                for (let i = 0; i < board.length; i++) {
+                    if (board[i] === '') return false;
+                }
+                return true;
+            }
+
+            function updateBoard() {
+                const cells = document.querySelectorAll('.cell');
+                cells.forEach(function(cell, index) {
+                    cell.textContent = board[index];
+                    if (board[index] !== '') {
+                        cell.classList.add('disabled');
+                    }
+                });
+            }
+
+            function checkWinner() {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                    [0, 4, 8], [2, 4, 6]
+                ];
+                
+                for (let i = 0; i < winPatterns.length; i++) {
+                    const pattern = winPatterns[i];
+                    const a = pattern[0];
+                    const b = pattern[1];
+                    const c = pattern[2];
+                    
+                    if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+
+            function handleGameEnd(winner) {
+                gameActive = false;
+                gamesPlayed++;
+                
+                const gameInfo = document.getElementById('gameInfo');
+                const botScoreEl = document.getElementById('botScore');
+                const playerScoreEl = document.getElementById('playerScore');
+                
+                if (winner === 'player') {
+                    playerWins++;
+                    if (playerScoreEl) playerScoreEl.textContent = playerWins;
+                    
+                    if (gamesPlayed >= 3) {
+                        setTimeout(function() {
+                            const gameSection = document.getElementById('gameSection');
+                            const finalQuestion = document.getElementById('finalQuestion');
+                            
+                            if (gameSection) gameSection.classList.add('hidden');
+                            if (finalQuestion) finalQuestion.classList.remove('hidden');
+                            
+                            for (let i = 0; i < 50; i++) {
+                                setTimeout(createHeart, i * 50);
+                            }
+                        }, 1500);
+                    } else {
+                        if (gameInfo) gameInfo.textContent = '🎉 Você ganhou essa! Vamos de novo!';
+                        setTimeout(initGame, 2000);
+                    }
+                } else if (winner === 'bot') {
+                    botWins++;
+                    if (botScoreEl) botScoreEl.textContent = botWins;
+                    if (gameInfo) gameInfo.textContent = '😅 Bot ganhou! Não desista!';
+                    setTimeout(initGame, 2000);
+                } else {
+                    if (gameInfo) gameInfo.textContent = '🤝 Empate! Vamos de novo!';
+                    setTimeout(initGame, 2000);
+                }
+            }
+
+            // Event listeners
             const btn = document.getElementById('btn');
             const btn2 = document.getElementById('btn2');
             
-            msg1.classList.add('hidden');
-            msg2.classList.remove('hidden');
-            btn.classList.add('hidden');
-            btn2.classList.remove('hidden');
-            
-            // Criar mais corações
-            for(let i = 0; i < 20; i++) {
-                setTimeout(createHeart, i * 100);
+            if (btn) {
+                btn.addEventListener('click', showMessage);
             }
-        }
-        
-        // Revelar pergunta final
-        function revealQuestion() {
-            const msg2 = document.getElementById('message2');
-            const btn2 = document.getElementById('btn2');
-            const finalQ = document.getElementById('finalQuestion');
             
-            msg2.classList.add('hidden');
-            btn2.classList.add('hidden');
-            finalQ.classList.remove('hidden');
-            
-            // Explosão de corações
-            for(let i = 0; i < 50; i++) {
-                setTimeout(createHeart, i * 50);
+            if (btn2) {
+                btn2.addEventListener('click', startGame);
             }
-        }
+        })();
     </script>
 </body>
 </html>
