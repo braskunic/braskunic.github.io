@@ -200,6 +200,70 @@
             padding: 15px;
             line-height: 1.9;
         }
+
+        .game-section {
+            text-align: center;
+            margin-top: 25px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
+            border-radius: 20px;
+            border: 3px solid #ff69b4;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            width: 90px;
+            height: 90px;
+            background: white;
+            border: 3px solid #ff69b4;
+            border-radius: 10px;
+            font-size: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .cell:hover {
+            background: #ffe4e1;
+            transform: scale(1.05);
+        }
+
+        .cell.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .game-info {
+            font-size: 18px;
+            color: #ff1493;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .score {
+            display: flex;
+            justify-content: space-around;
+            max-width: 300px;
+            margin: 15px auto;
+            font-size: 16px;
+        }
+
+        .score-item {
+            padding: 10px 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ff69b4;
+        }
     </style>
 </head>
 <body>
@@ -256,13 +320,25 @@
                 ✨ Clique Aqui
             </button>
             
-            <button class="button hidden" id="btn2" onclick="showQuestion()" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 12px;">
+            <button class="button hidden" id="btn2" onclick="startGame()" style="background: linear-gradient(135deg, #ff1493, #c71585); margin-top: 12px;">
                 🚫 NÃO Clique!
             </button>
             
+            <div class="game-section hidden surprise" id="gameSection">
+                <div class="game-info" id="gameInfo">🎮 Vamos jogar Jogo da Velha!</div>
+                <div class="score">
+                    <div class="score-item">Bot: <span id="botScore">0</span></div>
+                    <div class="score-item">Você: <span id="playerScore">0</span></div>
+                </div>
+                <div class="game-board" id="gameBoard"></div>
+                <div style="margin-top: 15px; font-size: 14px; color: #666;">
+                    Você é: ❤️ | Bot é: 💙
+                </div>
+            </div>
+            
             <div class="message hidden surprise" id="finalQuestion" style="text-align: center; margin-top: 25px; padding: 30px 20px; background: linear-gradient(135deg, #ffe4e1, #ffc0cb); border-radius: 20px; border: 3px solid #ff69b4;">
                 <div style="font-size: 22px; margin-bottom: 18px; color: #ff1493;">
-                    💕 Então...
+                    💕 Você ganhou! Então...
                 </div>
                 <div style="font-size: 24px; color: #c71585; font-weight: bold; line-height: 1.6;">
                     Quer namorar comigo?
@@ -291,32 +367,201 @@
         setInterval(createHeart, 300);
 
         function showMessage() {
-            const msg1 = document.getElementById('message1');
-            const msg2 = document.getElementById('message2');
-            const btn = document.getElementById('btn');
-            const btn2 = document.getElementById('btn2');
-            
-            msg1.classList.add('hidden');
-            msg2.classList.remove('hidden');
-            btn.classList.add('hidden');
-            btn2.classList.remove('hidden');
+            document.getElementById('message1').classList.add('hidden');
+            document.getElementById('message2').classList.remove('hidden');
+            document.getElementById('btn').classList.add('hidden');
+            document.getElementById('btn2').classList.remove('hidden');
             
             for(let i = 0; i < 20; i++) {
                 setTimeout(createHeart, i * 100);
             }
         }
-        
-        function showQuestion() {
-            const msg2 = document.getElementById('message2');
-            const btn2 = document.getElementById('btn2');
-            const finalQ = document.getElementById('finalQuestion');
+
+        let board = [];
+        let currentPlayer = '❤️';
+        let gameActive = false;
+        let gamesPlayed = 0;
+        let botWins = 0;
+        let playerWins = 0;
+
+        function startGame() {
+            document.getElementById('message2').classList.add('hidden');
+            document.getElementById('btn2').classList.add('hidden');
+            document.getElementById('gameSection').classList.remove('hidden');
             
-            msg2.classList.add('hidden');
-            btn2.classList.add('hidden');
-            finalQ.classList.remove('hidden');
+            initGame();
+        }
+
+        function initGame() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = '❤️';
+            gameActive = true;
             
-            for(let i = 0; i < 50; i++) {
-                setTimeout(createHeart, i * 50);
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = '';
+            
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.index = i;
+                cell.onclick = () => handleCellClick(i);
+                gameBoard.appendChild(cell);
+            }
+            
+            if (gamesPlayed < 2) {
+                document.getElementById('gameInfo').textContent = `Rodada ${gamesPlayed + 1} - Sua vez!`;
+            } else {
+                document.getElementById('gameInfo').textContent = `Última rodada! Você consegue! 💪`;
+            }
+        }
+
+        function handleCellClick(index) {
+            if (!gameActive || board[index] !== '') return;
+            
+            board[index] = currentPlayer;
+            updateBoard();
+            
+            if (checkWinner()) {
+                handleGameEnd('player');
+                return;
+            }
+            
+            if (board.every(cell => cell !== '')) {
+                handleGameEnd('draw');
+                return;
+            }
+            
+            currentPlayer = '💙';
+            document.getElementById('gameInfo').textContent = 'Bot está pensando...';
+            
+            setTimeout(() => {
+                botMove();
+            }, 500);
+        }
+
+        function botMove() {
+            if (!gameActive) return;
+            
+            let move;
+            
+            if (gamesPlayed < 2) {
+                // Bot joga para ganhar nas primeiras 2 partidas
+                move = getBestMove();
+            } else {
+                // Na terceira partida, bot joga mal de propósito
+                move = getWeakMove();
+            }
+            
+            board[move] = '💙';
+            updateBoard();
+            
+            if (checkWinner()) {
+                handleGameEnd('bot');
+                return;
+            }
+            
+            if (board.every(cell => cell !== '')) {
+                handleGameEnd('draw');
+                return;
+            }
+            
+            currentPlayer = '❤️';
+            document.getElementById('gameInfo').textContent = 'Sua vez!';
+        }
+
+        function getBestMove() {
+            // Bot tenta ganhar
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = '💙';
+                    if (checkWinner()) {
+                        board[i] = '';
+                        return i;
+                    }
+                    board[i] = '';
+                }
+            }
+            
+            // Bot bloqueia jogador
+            for (let i = 0; i < 9; i++) {
+                if (board[i] === '') {
+                    board[i] = '❤️';
+                    if (checkWinner()) {
+                        board[i] = '';
+                        return i;
+                    }
+                    board[i] = '';
+                }
+            }
+            
+            // Joga no centro ou canto
+            const priorities = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+            for (let i of priorities) {
+                if (board[i] === '') return i;
+            }
+            
+            return board.findIndex(cell => cell === '');
+        }
+
+        function getWeakMove() {
+            // Bot joga em posições ruins de propósito
+            const emptySpots = board.map((cell, idx) => cell === '' ? idx : null).filter(val => val !== null);
+            
+            // Evita jogadas que bloqueiam o jogador de ganhar
+            // Joga aleatoriamente em posições ruins
+            return emptySpots[Math.floor(Math.random() * emptySpots.length)];
+        }
+
+        function updateBoard() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, index) => {
+                cell.textContent = board[index];
+            });
+        }
+
+        function checkWinner() {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // linhas
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // colunas
+                [0, 4, 8], [2, 4, 6] // diagonais
+            ];
+            
+            return winPatterns.some(pattern => {
+                const [a, b, c] = pattern;
+                return board[a] !== '' && board[a] === board[b] && board[a] === board[c];
+            });
+        }
+
+        function handleGameEnd(winner) {
+            gameActive = false;
+            gamesPlayed++;
+            
+            if (winner === 'player') {
+                playerWins++;
+                document.getElementById('playerScore').textContent = playerWins;
+                
+                if (gamesPlayed >= 3) {
+                    // Jogadora ganhou a terceira rodada!
+                    setTimeout(() => {
+                        document.getElementById('gameSection').classList.add('hidden');
+                        document.getElementById('finalQuestion').classList.remove('hidden');
+                        
+                        for(let i = 0; i < 50; i++) {
+                            setTimeout(createHeart, i * 50);
+                        }
+                    }, 1500);
+                } else {
+                    document.getElementById('gameInfo').textContent = '🎉 Você ganhou essa! Vamos de novo!';
+                    setTimeout(initGame, 2000);
+                }
+            } else if (winner === 'bot') {
+                botWins++;
+                document.getElementById('botScore').textContent = botWins;
+                document.getElementById('gameInfo').textContent = '😅 Bot ganhou! Não desista!';
+                setTimeout(initGame, 2000);
+            } else {
+                document.getElementById('gameInfo').textContent = '🤝 Empate! Vamos de novo!';
+                setTimeout(initGame, 2000);
             }
         }
     </script>
