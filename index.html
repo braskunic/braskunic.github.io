@@ -155,6 +155,44 @@
             color: #ff1493;
             font-weight: bold;
         }
+
+        @keyframes jumpscare {
+            0% {
+                opacity: 0;
+                transform: scale(0.1) rotate(-180deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes shakeText {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            10% { transform: translate(-5px, 5px) rotate(-2deg) scale(1.05); }
+            20% { transform: translate(5px, -5px) rotate(2deg) scale(0.95); }
+            30% { transform: translate(-5px, -5px) rotate(-1deg) scale(1.05); }
+            40% { transform: translate(5px, 5px) rotate(1deg) scale(0.95); }
+            50% { transform: translate(-5px, 5px) rotate(-2deg) scale(1.05); }
+            60% { transform: translate(5px, -5px) rotate(2deg) scale(0.95); }
+            70% { transform: translate(-5px, -5px) rotate(-1deg) scale(1.05); }
+            80% { transform: translate(5px, 5px) rotate(1deg) scale(0.95); }
+            90% { transform: translate(-5px, 5px) rotate(-2deg) scale(1.05); }
+        }
+
+        @keyframes glitch {
+            0% { opacity: 1; }
+            10% { opacity: 0.8; transform: translate(2px, 2px); }
+            20% { opacity: 1; transform: translate(-2px, -2px); }
+            30% { opacity: 0.9; transform: translate(2px, -2px); }
+            40% { opacity: 1; transform: translate(-2px, 2px); }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; transform: translate(0, 0); }
+        }
     </style>
 </head>
 <body>
@@ -213,15 +251,15 @@
             </div>
             
             <div id="scareScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
-                <img src="https://assets.fortnitecreativehq.com/wp-content/uploads/2024/07/31154938/Thumbnail-Hello-Kitty2-1-1040x585.jpg" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
-                <h1 style="color: #ff1493; font-size: 48px; margin-top: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                <img id="scareImage" src="https://assets.fortnitecreativehq.com/wp-content/uploads/2024/07/31154938/Thumbnail-Hello-Kitty2-1-1040x585.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(0.5);">
+                <h1 id="scareText" style="position: absolute; color: #ff1493; font-size: 64px; text-shadow: 0 0 20px #ff1493, 0 0 40px #ff1493; opacity: 0; transform: scale(0); animation: shakeText 0.5s infinite;">
                     TOME ESSE SUSTO AÍ! 😱
                 </h1>
-                <p style="color: white; margin-top: 20px; font-size: 18px;">Aperte F11 para sair da tela cheia</p>
+                <p style="position: absolute; bottom: 30px; color: white; font-size: 18px; background: rgba(0,0,0,0.7); padding: 10px 20px; border-radius: 10px;">Aperte F11 para sair da tela cheia</p>
             </div>
             
-            <audio id="scareAudio" preload="auto">
-                <source src="https://i.pinimg.com/originals/b5/03/aa/b503aabca18de48f11bc1e2c32e108c4.gif" type="audio/mpeg">
+            <audio id="scareAudio" loop preload="auto">
+                <source src="https://pranx.com/maze/scream.mp3" type="audio/mpeg">
             </audio>
         </div>
     </div>
@@ -253,14 +291,36 @@
                 elem.msRequestFullscreen();
             }
             
-            // Mostra a tela de susto
-            const scareScreen = document.getElementById('scareScreen');
-            scareScreen.style.display = 'flex';
-            
-            // Toca o áudio
-            const audio = document.getElementById('scareAudio');
-            audio.volume = 0.7;
-            audio.play().catch(e => console.log('Erro ao tocar áudio:', e));
+            // Pequeno delay para criar suspense
+            setTimeout(() => {
+                // Mostra a tela de susto
+                const scareScreen = document.getElementById('scareScreen');
+                const scareImage = document.getElementById('scareImage');
+                const scareText = document.getElementById('scareText');
+                
+                scareScreen.style.display = 'flex';
+                
+                // JUMPSCARE! Imagem aparece de repente
+                setTimeout(() => {
+                    scareImage.style.animation = 'jumpscare 0.3s ease-out, glitch 0.1s infinite';
+                    scareImage.style.opacity = '1';
+                    scareImage.style.transform = 'scale(1)';
+                    
+                    // Texto aparece tremendo
+                    scareText.style.opacity = '1';
+                    scareText.style.transform = 'scale(1)';
+                    
+                    // Toca o áudio
+                    const audio = document.getElementById('scareAudio');
+                    audio.volume = 0.7;
+                    audio.play().catch(e => console.log('Erro ao tocar áudio:', e));
+                    
+                    // Para o glitch depois de 1 segundo
+                    setTimeout(() => {
+                        scareImage.style.animation = 'none';
+                    }, 1000);
+                }, 100);
+            }, 500);
         }
     </script>
 </body>
