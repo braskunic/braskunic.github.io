@@ -163,7 +163,7 @@
     <div class="container">
         <div class="card">
             <div style="margin: 20px 0;">
-                <img src="https://i.pinimg.com/originals/b5/03/aa/b503aabca18de48f11bc1e2c32e108c4.gif" alt="Hello Kitty" style="width: 120px; height: auto; max-width: 100%; animation: bounce 2s infinite;">
+                <img src="https://www.pngarts.com/files/11/Pink-Hello-Kitty-PNG-Image.png" alt="Hello Kitty" style="width: 120px; height: auto; max-width: 100%; animation: bounce 2s infinite;">
             </div>
             
             <div class="emoji">😠</div>
@@ -192,9 +192,37 @@
                 </p>
                 
                 <p style="text-align: center; margin-top: 30px; font-size: 22px;">
-                    Isso significa que você gostou! 💖
+                    Isso significa que você se importa! 💖
                 </p>
+                
+                <button onclick="activateScare()" style="
+                    background: linear-gradient(135deg, #ff1493, #c71585);
+                    color: white;
+                    border: none;
+                    padding: 15px 40px;
+                    font-size: 18px;
+                    border-radius: 50px;
+                    cursor: pointer;
+                    margin-top: 30px;
+                    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+                    transition: all 0.3s;
+                    font-weight: 600;
+                ">
+                    🚫 NÃO Clique Aqui!
+                </button>
             </div>
+            
+            <div id="scareScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: black; z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+                <img src="https://assets.fortnitecreativehq.com/wp-content/uploads/2024/07/31154938/Thumbnail-Hello-Kitty2-1-1040x585.jpg" style="max-width: 100%; max-height: 80vh; object-fit: contain;">
+                <h1 style="color: #ff1493; font-size: 48px; margin-top: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                    TOME ESSE SUSTO AÍ! 😱
+                </h1>
+                <p style="color: white; margin-top: 20px; font-size: 18px;">Aperte F11 para sair da tela cheia</p>
+            </div>
+            
+            <audio id="scareAudio" preload="auto">
+                <source src="https://i.pinimg.com/originals/b5/03/aa/b503aabca18de48f11bc1e2c32e108c4.gif" type="audio/mpeg">
+            </audio>
         </div>
     </div>
 
@@ -213,8 +241,27 @@
         }
 
         setInterval(createHeart, 300);
+
+        function activateScare() {
+            // Entra em tela cheia
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+            
+            // Mostra a tela de susto
+            const scareScreen = document.getElementById('scareScreen');
+            scareScreen.style.display = 'flex';
+            
+            // Toca o áudio
+            const audio = document.getElementById('scareAudio');
+            audio.volume = 0.7;
+            audio.play().catch(e => console.log('Erro ao tocar áudio:', e));
+        }
     </script>
 </body>
 </html>
-
-
