@@ -1,1 +1,621 @@
-not here
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa da Nossa História 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(180deg, #87CEEB 0%, #FFB6C1 50%, #FFC0CB 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .clouds {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.6;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 48px;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: white;
+            font-size: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-world {
+            position: relative;
+            min-height: 800px;
+            background: linear-gradient(180deg, rgba(135, 206, 235, 0.3) 0%, rgba(144, 238, 144, 0.4) 100%);
+            border-radius: 30px;
+            padding: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .tree-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .tree-trunk {
+            width: 40px;
+            height: 300px;
+            background: linear-gradient(180deg, #8B4513, #654321);
+            margin: 0 auto;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .tree-leaves {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 200px;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        .fruit {
+            position: absolute;
+            font-size: 30px;
+            animation: fruitGrow 0.5s ease-out, fruitSway 3s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        @keyframes fruitGrow {
+            0% {
+                transform: scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fruitSway {
+            0%, 100% {
+                transform: rotate(-3deg) translateY(0);
+            }
+            50% {
+                transform: rotate(3deg) translateY(-5px);
+            }
+        }
+
+        .path-line {
+            position: absolute;
+            width: 6px;
+            background: linear-gradient(180deg, #FFD700, #FF69B4, #FF1493);
+            border-radius: 3px;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+            z-index: 1;
+        }
+
+        .level {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 60px;
+            cursor: pointer;
+            transition: all 0.4s;
+            animation: popIn 0.6s ease-out;
+            z-index: 2;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(-180deg);
+            }
+            60% {
+                transform: scale(1.1) rotate(10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+
+        .level-circle {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff, #ffe4e1);
+            border-radius: 50%;
+            border: 6px solid #FF69B4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .level:hover .level-circle {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 15px 50px rgba(255, 105, 180, 0.8);
+            border-color: #FF1493;
+        }
+
+        .level-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .level-number {
+            background: #FF1493;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            border: 3px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .level-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #FF1493;
+            text-align: center;
+        }
+
+        .level.locked .level-circle {
+            background: linear-gradient(135deg, #ccc, #999);
+            border-color: #666;
+            filter: grayscale(1);
+        }
+
+        .level.locked .level-icon::after {
+            content: '🔒';
+            position: absolute;
+            font-size: 40px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.5s ease-out;
+            border: 5px solid #FF69B4;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #FF1493;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #ffe4e1;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            transform: rotate(90deg) scale(1.2);
+            background: #FF69B4;
+            color: white;
+        }
+
+        .modal-icon {
+            font-size: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: #FF1493;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .modal-text {
+            color: #666;
+            font-size: 18px;
+            line-height: 2;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-memory {
+            background: linear-gradient(135deg, #ffe4e1, #ffc0cb);
+            padding: 25px;
+            border-radius: 15px;
+            font-style: italic;
+            color: #c71585;
+            line-height: 1.8;
+            margin-top: 20px;
+            border-left: 5px solid #FF69B4;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 105, 180, 0.6);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 30px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 400px;
+            overflow: hidden;
+            border: 2px solid white;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FF69B4, #FF1493);
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 32px; }
+            .level { width: 140px; height: 140px; }
+            .level-icon { font-size: 45px; }
+            .modal-content { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="clouds" id="clouds"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ Mapa da Nossa História 💕</h1>
+            <p>Uma jornada através dos nossos momentos especiais</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%;">0%</div>
+            </div>
+        </div>
+
+        <div class="map-world">
+            <!-- Linha do caminho -->
+            <svg style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1;">
+                <path d="M 50% 10% Q 30% 25%, 50% 40% T 50% 70% T 50% 100%" 
+                      stroke="url(#gradient)" 
+                      stroke-width="6" 
+                      fill="none" 
+                      stroke-dasharray="10,5"
+                      opacity="0.6"/>
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#FF69B4;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#FF1493;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <div class="level" onclick="openLevel(1)" style="animation-delay: 0.1s">
+                <div class="level-number">1</div>
+                <div class="level-circle">
+                    <div class="level-icon">🌟</div>
+                    <div class="level-title">Início</div>
+                </div>
+            </div>
+
+            <div class="level locked" id="level2" style="animation-delay: 0.2s">
+                <div class="level-number">2</div>
+                <div class="level-circle">
+                    <div class="level-icon">💭</div>
+                    <div class="level-title">Conexão</div>
+                </div>
+            </div>
+
+            <div class="level locked" id="level3" style="animation-delay: 0.3s">
+                <div class="level-number">3</div>
+                <div class="level-circle">
+                    <div class="level-icon">😊</div>
+                    <div class="level-title">Risadas</div>
+                </div>
+            </div>
+
+            <div class="level locked" id="level4" style="animation-delay: 0.4s">
+                <div class="level-number">4</div>
+                <div class="level-circle">
+                    <div class="level-icon">💕</div>
+                    <div class="level-title">Sentimentos</div>
+                </div>
+            </div>
+
+            <div class="level locked" id="level5" style="animation-delay: 0.5s">
+                <div class="level-number">5</div>
+                <div class="level-circle">
+                    <div class="level-icon">🌈</div>
+                    <div class="level-title">Momentos</div>
+                </div>
+            </div>
+
+            <div class="level locked" id="level6" style="animation-delay: 0.6s">
+                <div class="level-number">6</div>
+                <div class="level-circle">
+                    <div class="level-icon">💖</div>
+                    <div class="level-title">Você</div>
+                </div>
+            </div>
+
+            <div class="level locked" id="level7" style="animation-delay: 0.7s">
+                <div class="level-number">7</div>
+                <div class="level-circle">
+                    <div class="level-icon">🙏</div>
+                    <div class="level-title">Nossa Fé</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">✕</div>
+            <div class="modal-icon" id="modalIcon"></div>
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-text" id="modalText"></div>
+            <div class="modal-memory" id="modalMemory"></div>
+            <button class="btn-next" id="btnNext">Continuar a Jornada ➜</button>
+        </div>
+    </div>
+
+    <script>
+        // Criar nuvens
+        function createCloud() {
+            const cloud = document.createElement('div');
+            cloud.className = 'cloud';
+            cloud.textContent = '☁️';
+            cloud.style.top = Math.random() * 70 + '%';
+            cloud.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            cloud.style.animationDelay = Math.random() * 5 + 's';
+            document.getElementById('clouds').appendChild(cloud);
+        }
+
+        for (let i = 0; i < 8; i++) {
+            createCloud();
+        }
+
+        const levels = {
+            1: {
+                icon: '🌟',
+                title: 'O Começo de Tudo',
+                text: 'Nossa história começou de uma forma especial...',
+                memory: 'Quando te conheci, algo mudou. Não foi só mais uma pessoa que entrou na minha vida, foi VOCÊ. E você trouxe uma luz diferente, um brilho que fez tudo parecer mais bonito. Foi ali que tudo começou. ✨'
+            },
+            2: {
+                icon: '💭',
+                title: 'Nossa Conexão',
+                text: 'Quando percebi que éramos diferentes...',
+                memory: 'Nossas conversas fluíam naturalmente. Podia falar sobre qualquer coisa com você e sempre parecia que o tempo parava. Cada palavra, cada risada, cada silêncio confortável... tudo construindo algo único entre nós. 💫'
+            },
+            3: {
+                icon: '😊',
+                title: 'Suas Risadas',
+                text: 'O som que ilumina meus dias...',
+                memory: 'Sua risada é mágica! Toda vez que você ri, é como se o mundo inteiro ficasse mais leve. Eu faria qualquer coisa só pra ver você sorrindo daquele jeito sincero e lindo que só você tem. Você transforma dias ruins em momentos especiais. 🌟'
+            },
+            4: {
+                icon: '💕',
+                title: 'Sentimentos Crescendo',
+                text: 'Quando percebi o quanto você é importante...',
+                memory: 'Foi acontecendo aos poucos. De repente você não era só alguém especial, você era ESSENCIAL. Seus dias viraram meus dias, suas alegrias viraram minhas alegrias. Você se tornou parte de quem eu sou. 💖'
+            },
+            5: {
+                icon: '🌈',
+                title: 'Nossos Momentos',
+                text: 'Cada segundo ao seu lado é único...',
+                memory: 'Desde as coisas simples até os momentos mais especiais, tudo com você tem um significado diferente. Cada mensagem, cada encontro, cada conversa... são memórias que guardo com carinho no coração. Você faz os dias serem mais coloridos! 🎨'
+            },
+            6: {
+                icon: '💖',
+                title: 'Você, Yasmin',
+                text: 'A pessoa mais especial...',
+                memory: 'Yasmin, você é incrível! Seu jeito meigo, sua doçura, seu amor pela Hello Kitty, sua forma única de ver o mundo... tudo em você me encanta. Sempre que eu ver algo relacionado à Hello Kitty, vou me lembrar de você. Porque ela é fofa e especial, assim como você é. Você não é só importante, você é essencial. Você não é só amada, você É o amor que ilumina minha vida. Obrigado por existir e por me deixar fazer parte da sua história. 🌸💕✨'
+            },
+            7: {
+                icon: '🙏',
+                title: 'Nossa Fé e Futuro',
+                text: 'O que Deus tem preparado para nós...',
+                memory: 'Yasmin, eu espero todos os dias que nossa história possa estar sendo guiada por Deus. Que Ele ilumine nossas conversas, nossos caminhos e nossos corações. Oro para que cada dia possamos estar em conexão, não só um com o outro, mas com o propósito que Ele tem para nossas vidas. Quero que saiba que te amarei em todas as suas fases, nas boas e nas ruins, nos dias de sol e nos dias de tempestade. Obrigado pela sua confiança em mim. Isso é um presente que eu cuido com todo carinho. Se for da vontade de Deus, vamos construir algo lindo juntos. 🙏💕✨'
+            }
+        };
+
+        let currentLevel = 1;
+        let completedLevels = [];
+
+        function updateProgress() {
+            const progress = (completedLevels.length / 7) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressBar').textContent = Math.round(progress) + '%';
+        }
+
+        function openLevel(levelNum) {
+            const level = levels[levelNum];
+            if (!level) return;
+
+            // Marca como completado se ainda não foi
+            if (!completedLevels.includes(levelNum)) {
+                completedLevels.push(levelNum);
+                updateProgress();
+            }
+
+            document.getElementById('modalIcon').textContent = level.icon;
+            document.getElementById('modalTitle').textContent = level.title;
+            document.getElementById('modalText').textContent = level.text;
+            document.getElementById('modalMemory').textContent = level.memory;
+            
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+
+            const btnNext = document.getElementById('btnNext');
+            if (levelNum < 7) {
+                btnNext.textContent = 'Continuar a Jornada ➜';
+                btnNext.onclick = () => unlockNext(levelNum);
+            } else {
+                btnNext.textContent = '💝 Fim da Jornada - Amém!';
+                btnNext.onclick = () => {
+                    closeModal();
+                    setTimeout(() => alert('Que Deus abençoe nossa história, Yasmin! 💕🙏✨'), 500);
+                };
+            }
+        }
+
+        function unlockNext(currentNum) {
+            closeModal();
+            const nextNum = currentNum + 1;
+            if (nextNum <= 7) {
+                const nextLevel = document.getElementById('level' + nextNum);
+                if (nextLevel) {
+                    nextLevel.classList.remove('locked');
+                    nextLevel.onclick = () => openLevel(nextNum);
+                    
+                    setTimeout(() => {
+                        nextLevel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Fechar modal clicando fora
+        document.getElementById('modal').onclick = (e) => {
+            if (e.target.id === 'modal') closeModal();
+        };
+    </script>
+</body>
+</html>
