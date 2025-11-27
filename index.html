@@ -9,14 +9,18 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(180deg, #87CEEB 0%, #FFB6C1 50%, #FFC0CB 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             overflow-x: hidden;
             padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .clouds {
@@ -26,6 +30,7 @@
             pointer-events: none;
             z-index: 1;
             overflow: hidden;
+            will-change: transform;
         }
 
         .cloud {
@@ -33,11 +38,13 @@
             font-size: 40px;
             opacity: 0.6;
             animation: float 20s infinite linear;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         @keyframes float {
-            0% { transform: translateX(-100px); }
-            100% { transform: translateX(calc(100vw + 100px)); }
+            0% { transform: translateX(-100px) translateZ(0); }
+            100% { transform: translateX(calc(100vw + 100px)) translateZ(0); }
         }
 
         .container {
@@ -59,6 +66,8 @@
             width: 100px;
             height: 100px;
             animation: float 3s ease-in-out infinite;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         .header-gif.left {
@@ -114,12 +123,13 @@
             bottom: 0;
             z-index: 5;
             pointer-events: none;
+            will-change: transform;
         }
 
         @media (max-width: 768px) {
             .tree-container {
                 right: 10px;
-                transform: scale(0.7);
+                transform: scale(0.7) translateZ(0);
                 transform-origin: bottom right;
             }
         }
@@ -138,9 +148,10 @@
             position: absolute;
             top: -200px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateZ(0);
             font-size: 250px;
             filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.3));
+            backface-visibility: hidden;
         }
 
         .fruit {
@@ -149,28 +160,30 @@
             animation: fruitGrow 0.6s ease-out, fruitSway 3s ease-in-out infinite;
             filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.4));
             z-index: 10;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         @keyframes fruitGrow {
             0% {
-                transform: scale(0) rotate(-180deg);
+                transform: scale(0) rotate(-180deg) translateZ(0);
                 opacity: 0;
             }
             60% {
-                transform: scale(1.2) rotate(10deg);
+                transform: scale(1.2) rotate(10deg) translateZ(0);
             }
             100% {
-                transform: scale(1) rotate(0deg);
+                transform: scale(1) rotate(0deg) translateZ(0);
                 opacity: 1;
             }
         }
 
         @keyframes fruitSway {
             0%, 100% {
-                transform: rotate(-3deg) translateY(0);
+                transform: rotate(-3deg) translateY(0) translateZ(0);
             }
             50% {
-                transform: rotate(3deg) translateY(-5px);
+                transform: rotate(3deg) translateY(-5px) translateZ(0);
             }
         }
 
@@ -189,22 +202,24 @@
             height: 180px;
             margin: 0 auto 60px;
             cursor: pointer;
-            transition: all 0.4s;
+            transition: transform 0.3s ease;
             animation: popIn 0.6s ease-out;
             z-index: 2;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         @keyframes popIn {
             0% {
                 opacity: 0;
-                transform: scale(0) rotate(-180deg);
+                transform: scale(0) rotate(-180deg) translateZ(0);
             }
             60% {
-                transform: scale(1.1) rotate(10deg);
+                transform: scale(1.1) rotate(10deg) translateZ(0);
             }
             100% {
                 opacity: 1;
-                transform: scale(1) rotate(0);
+                transform: scale(1) rotate(0) translateZ(0);
             }
         }
 
@@ -219,25 +234,33 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 10px 30px rgba(255, 105, 180, 0.5);
-            transition: all 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         .level:hover .level-circle {
-            transform: scale(1.15) rotate(5deg);
+            transform: scale(1.15) rotate(5deg) translateZ(0);
             box-shadow: 0 15px 50px rgba(255, 105, 180, 0.8);
             border-color: #FF1493;
+        }
+
+        .level:active .level-circle {
+            transform: scale(1.05) translateZ(0);
         }
 
         .level-icon {
             font-size: 60px;
             margin-bottom: 10px;
             animation: bounce 2s infinite;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            0%, 100% { transform: translateY(0) translateZ(0); }
+            50% { transform: translateY(-15px) translateZ(0); }
         }
 
         .level-number {
@@ -289,6 +312,7 @@
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.3s;
+            -webkit-overflow-scrolling: touch;
         }
 
         @keyframes fadeIn {
@@ -307,16 +331,17 @@
             position: relative;
             animation: slideUp 0.5s ease-out;
             border: 5px solid #FF69B4;
+            -webkit-overflow-scrolling: touch;
         }
 
         @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(100px) scale(0.8);
+                transform: translateY(100px) scale(0.8) translateZ(0);
             }
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0) scale(1) translateZ(0);
             }
         }
 
@@ -536,7 +561,7 @@
     </div>
 
     <script>
-        // Criar nuvens
+        // Criar nuvens (limitado para performance)
         function createCloud() {
             const cloud = document.createElement('div');
             cloud.className = 'cloud';
@@ -547,7 +572,9 @@
             document.getElementById('clouds').appendChild(cloud);
         }
 
-        for (let i = 0; i < 8; i++) {
+        // Reduz número de nuvens em mobile para melhor performance
+        const cloudCount = window.innerWidth < 768 ? 4 : 8;
+        for (let i = 0; i < cloudCount; i++) {
             createCloud();
         }
 
@@ -601,8 +628,11 @@
 
         function updateProgress() {
             const progress = (completedLevels.length / 7) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-            document.getElementById('progressBar').textContent = Math.round(progress) + '%';
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = Math.round(progress) + '%';
+            }
         }
 
         function openLevel(levelNum) {
@@ -613,37 +643,50 @@
             if (!completedLevels.includes(levelNum)) {
                 completedLevels.push(levelNum);
                 updateProgress();
-                addFruitToTree(levelNum);
+                
+                // Usa requestAnimationFrame para animação suave
+                requestAnimationFrame(() => {
+                    addFruitToTree(levelNum);
+                });
             }
 
-            document.getElementById('modalIcon').textContent = level.icon;
-            document.getElementById('modalTitle').textContent = level.title;
-            document.getElementById('modalText').textContent = level.text;
-            document.getElementById('modalMemory').textContent = level.memory;
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+            const modalMemory = document.getElementById('modalMemory');
+            
+            if (modalIcon) modalIcon.textContent = level.icon;
+            if (modalTitle) modalTitle.textContent = level.title;
+            if (modalText) modalText.textContent = level.text;
+            if (modalMemory) modalMemory.textContent = level.memory;
             
             const modal = document.getElementById('modal');
-            modal.style.display = 'flex';
+            if (modal) modal.style.display = 'flex';
 
             const btnNext = document.getElementById('btnNext');
-            if (levelNum < 7) {
-                btnNext.textContent = 'Continuar a Jornada ➜';
-                btnNext.onclick = () => unlockNext(levelNum);
-            } else {
-                btnNext.textContent = '💝 Fim da Jornada - Amém!';
-                btnNext.onclick = () => {
-                    closeModal();
-                    setTimeout(() => alert('Que Deus abençoe nossa história, Yasmin! 💕🙏✨'), 500);
-                };
+            if (btnNext) {
+                if (levelNum < 7) {
+                    btnNext.textContent = 'Continuar a Jornada ➜';
+                    btnNext.onclick = () => unlockNext(levelNum);
+                } else {
+                    btnNext.textContent = '💝 Fim da Jornada - Amém!';
+                    btnNext.onclick = () => {
+                        closeModal();
+                        setTimeout(() => alert('Que Deus abençoe nossa história, Yasmin! 💕🙏✨'), 500);
+                    };
+                }
             }
         }
 
         function addFruitToTree(levelNum) {
             const fruitsContainer = document.getElementById('fruits');
+            if (!fruitsContainer) return;
+            
             const fruit = document.createElement('div');
             fruit.className = 'fruit';
             fruit.textContent = '🍎';
             
-            // Posições diferentes para cada fruto (distribuídos na copa da árvore)
+            // Posições diferentes para cada fruto
             const positions = [
                 { top: '-180px', left: '-60px' },
                 { top: '-160px', left: '50px' },
@@ -655,11 +698,11 @@
             ];
             
             const pos = positions[levelNum - 1];
-            fruit.style.top = pos.top;
-            fruit.style.left = pos.left;
-            fruit.style.animationDelay = '0s';
-            
-            fruitsContainer.appendChild(fruit);
+            if (pos) {
+                fruit.style.top = pos.top;
+                fruit.style.left = pos.left;
+                fruitsContainer.appendChild(fruit);
+            }
         }
 
         function unlockNext(currentNum) {
@@ -671,21 +714,36 @@
                     nextLevel.classList.remove('locked');
                     nextLevel.onclick = () => openLevel(nextNum);
                     
-                    setTimeout(() => {
-                        nextLevel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
+                    // Usa requestAnimationFrame para scroll suave
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            nextLevel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 300);
+                    });
                 }
             }
         }
 
         function closeModal() {
-            document.getElementById('modal').style.display = 'none';
+            const modal = document.getElementById('modal');
+            if (modal) modal.style.display = 'none';
         }
 
-        // Fechar modal clicando fora
-        document.getElementById('modal').onclick = (e) => {
-            if (e.target.id === 'modal') closeModal();
-        };
+        // Fechar modal clicando fora (com verificação)
+        const modal = document.getElementById('modal');
+        if (modal) {
+            modal.onclick = (e) => {
+                if (e.target.id === 'modal') closeModal();
+            };
+        }
+
+        // Previne scroll do body quando modal está aberto
+        const modalContent = document.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.addEventListener('touchmove', (e) => {
+                e.stopPropagation();
+            }, { passive: true });
+        }
     </script>
 </body>
 </html>
