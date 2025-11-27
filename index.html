@@ -1,519 +1,655 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa da Nossa História - Yasmin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Yasmin &hearts;</title>
+    <!-- Fontes de Texto -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Biblioteca de Ícones (Para substituir os emojis bugados) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 1. Carrega o Tailwind CSS para o estilo -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 2. Configurações para carregar módulos do React diretamente do navegador -->
-    <script type="importmap">
-    {
-        "imports": {
-            "react": "https://esm.sh/react@18.2.0",
-            "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-            "framer-motion": "https://esm.sh/framer-motion@10.12.16",
-            "lucide-react": "https://esm.sh/lucide-react@0.263.1"
-        }
-    }
-    </script>
-    
-    <!-- 3. Carrega o Babel para traduzir o React -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
     <style>
-        /* Ajustes finos de fonte e scrollbar */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.5); border-radius: 4px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(180deg, #87CEEB 0%, #ffcbf2 50%, #FFC0CB 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px 10px;
+            color: #4a4a4a;
+        }
+
+        /* --- NUVENS (Feitas com CSS puro para não bugar) --- */
+        .clouds {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            background: #fff;
+            border-radius: 100px;
+            opacity: 0.8;
+            animation: float 25s infinite linear;
+        }
+
+        .cloud::after, .cloud::before {
+            content: '';
+            position: absolute;
+            background: #fff;
+            z-index: -1;
+        }
+
+        .cloud::after { width: 40px; height: 40px; top: -20px; left: 15px; border-radius: 100px; }
+        .cloud::before { width: 50px; height: 50px; top: -30px; left: 35px; border-radius: 100px; }
+
+        @keyframes float {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(calc(100vw + 150px)); }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .header h1 {
+            color: white;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(36px, 8vw, 56px);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .header-gif {
+            width: 80px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+        }
+
+        .progress-container {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            height: 24px;
+            border-radius: 12px;
+            margin: 20px auto;
+            max-width: 300px;
+            padding: 2px;
+            border: 2px solid rgba(255,255,255,0.6);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF69B4, #FF1493);
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .map-world {
+            position: relative;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 40px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .map-line {
+            position: absolute;
+            top: 50px;
+            bottom: 50px;
+            left: 50%;
+            width: 4px;
+            background: repeating-linear-gradient(to bottom, #FF69B4 0, #FF69B4 10px, transparent 10px, transparent 20px);
+            transform: translateX(-50%);
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        .level {
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.3s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .level:hover { transform: scale(1.1); }
+        .level:active { transform: scale(0.95); }
+
+        .level-circle {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 50%;
+            border: 5px solid #FF69B4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s;
+        }
+
+        /* Ajuste para ícones do FontAwesome */
+        .level-icon { 
+            font-size: 35px; 
+            margin-bottom: 8px; 
+            color: #FF69B4;
+        }
+        
+        .level-title { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #FF1493; 
+            text-align: center; 
+            line-height: 1.2; 
+        }
+
+        .level.locked .level-circle {
+            background: #e0e0e0;
+            border-color: #bbb;
+            filter: grayscale(1);
+        }
+        .level.locked .level-icon { color: #888; }
+
+        /* --- CARTINHA --- */
+        .mini-cartinha {
+            position: relative;
+            z-index: 3;
+            background: #fffdf0;
+            background-image: linear-gradient(#f3efe3 1px, transparent 1px);
+            background-size: 100% 25px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1), 0 0 0 5px rgba(255,255,255,0.5);
+            margin: 10px 0;
+            transform: rotate(-1deg);
+            border: 1px solid #e6dace;
+            text-align: left;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .mini-cartinha::before {
+            content: '💌 Bilhete do Coração';
+            display: block;
+            font-family: 'Dancing Script', cursive;
+            font-size: 24px;
+            color: #d63384;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* Correção para caracteres bugados na cartinha */
+        .cartinha-text {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            white-space: pre-wrap;
+        }
+        
+        .tape {
+            background-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            width: 100px;
+            height: 25px;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(2deg);
+            z-index: 4;
+            backdrop-filter: blur(2px);
+        }
+
+        /* --- ÁRVORE CSS (Não usa Emoji) --- */
+        .tree-container {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            width: 200px;
+            height: 350px;
+        }
+
+        .tree-trunk {
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(90deg, #5D4037, #8D6E63);
+            margin: 0 auto;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .tree-leaves {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 180px;
+            background: #4CAF50;
+            border-radius: 50%;
+            box-shadow: 
+                inset -20px -20px 0 rgba(0,0,0,0.1),
+                -60px 20px 0 #66BB6A,
+                60px 20px 0 #43A047;
+            z-index: 2;
+        }
+
+        @media (max-width: 480px) {
+            .tree-container {
+                right: -40px;
+                transform: scale(0.7);
+                transform-origin: bottom right;
+            }
+        }
+
+        .fruit {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4444;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 0 rgba(0,0,0,0.2);
+            animation: popFruit 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3;
+        }
+        
+        .fruit::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: 8px;
+            width: 4px;
+            height: 4px;
+            background: #3e2723;
+            border-radius: 2px;
+        }
+        
+        @keyframes popFruit { from { transform: scale(0); } to { transform: scale(1); } }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.4s ease-out;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            background: #f0f0f0;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-memory {
+            background: #fff0f5;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            color: #d63384;
+            font-style: italic;
+            border-left: 4px solid #FF1493;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.3);
+            transition: transform 0.2s;
+        }
+        
+        .btn-next:active { transform: scale(0.98); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="bg-gradient-to-b from-sky-400 via-pink-300 to-rose-300 min-h-screen">
+<body>
+    <div class="clouds" id="clouds"></div>
+    
+    <div class="tree-container">
+        <div class="tree-trunk"></div>
+        <div class="tree-leaves" id="fruits-container"></div>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <img src="https://media.tenor.com/RAmoFI__LV0AAAAi/luv-u.gif" class="header-gif" alt="Coracao">
+            <!-- Texto corrigido com códigos para não bugar -->
+            <h1>Mapa da Nossa Hist&oacute;ria</h1>
+            <p>Yasmin &amp; Eu</p>
+            <div class="progress-container">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
 
-    <div id="root"></div>
+        <div class="map-world">
+            <div class="map-line"></div>
 
-    <!-- 4. Seu Código React -->
-    <script type="text/babel" data-type="module">
-        import React, { useState, useRef, useEffect } from 'react';
-        import { createRoot } from 'react-dom/client';
-        import { motion, AnimatePresence } from 'framer-motion';
-        import { X, ChevronRight, Heart, Sparkles, Cloud } from 'lucide-react';
+            <!-- NÍVEL 1: Início -->
+            <div class="level" onclick="openLevel(1)">
+                <div class="level-circle">
+                    <!-- Ícone FontAwesome (Estrela) -->
+                    <i class="level-icon fas fa-star"></i>
+                    <div class="level-title">In&iacute;cio</div>
+                </div>
+            </div>
 
-        // --- DADOS DA HISTÓRIA ---
-        const levels = [
-        {
-            id: 1,
-            icon: '🌟',
-            title: 'O Começo de Tudo',
-            subtitle: 'Início',
-            text: 'Nossa história começou de uma forma especial...',
-            memory: 'Quando te conheci, algo mudou. Não foi só mais uma pessoa que entrou na minha vida, foi VOCÊ. E você trouxe uma luz diferente, um brilho que fez tudo parecer mais bonito. Foi ali que tudo começou. ✨',
-            color: 'from-amber-400 to-orange-500'
-        },
-        {
-            id: 2,
-            icon: '💭',
-            title: 'Nossa Conexão',
-            subtitle: 'Conexão',
-            text: 'Quando percebi que éramos diferentes...',
-            memory: 'Nossas conversas fluíam naturalmente. Podia falar sobre qualquer coisa com você e sempre parecia que o tempo parava. Cada palavra, cada risada, cada silêncio confortável... tudo construindo algo único entre nós. 💫',
-            color: 'from-purple-400 to-indigo-500'
-        },
-        {
-            id: 3,
-            icon: '💌',
-            title: 'Mini Cartinha',
-            subtitle: 'Mini Cartinha',
-            text: 'Uma mensagem especial do meu coração para o seu...',
-            memory: `Yasmin Meu amor,
-        Eu sei que às vezes o mundo pesa demais no seu peito, mesmo quando você não diz nada. Eu sinto seu silêncio, e ele nunca passa despercebido pra mim. Quero que saiba que eu estou aqui — não para te cobrar sorrisos, mas para te dar a minha mão, mesmo quando tudo parece escuro.
+            <!-- NÍVEL 2: Conexão -->
+            <div class="level locked" id="level2">
+                <div class="level-circle">
+                    <!-- Ícone FontAwesome (Comentário) -->
+                    <i class="level-icon fas fa-comments"></i>
+                    <div class="level-title">Conex&atilde;o</div>
+                </div>
+            </div>
 
-        Você não precisa ser forte o tempo todo. Pode descansar em mim quando quiser. Eu te amo nos seus dias bons, mas também — e talvez até mais — nos seus dias nublados.
+            <!-- MINI CARTINHA - Texto corrigido -->
+            <div class="mini-cartinha">
+                <div class="tape"></div>
+                <div class="cartinha-text">
+Yasmin Meu amor,
 
-        Se o seu coração estiver cansado, deixa o meu te abraçar. Eu caminho contigo, no seu ritmo, sem pressa, sem cobrança.
-        Você é importante pra mim. Você é luz, mesmo quando não consegue enxergar isso. E eu fico aqui, segurando você com todo carinho que existe em mim 💕`,
-            color: 'from-rose-300 to-pink-500'
-        },
-        {
-            id: 4,
-            icon: '😊',
-            title: 'Suas Risadas',
-            subtitle: 'Risadas',
-            text: 'O som que ilumina meus dias...',
-            memory: 'Sua risada é mágica! Toda vez que você ri, é como se o mundo inteiro ficasse mais leve. Eu faria qualquer coisa só pra ver você sorrindo daquele jeito sincero e lindo que só você tem. Você transforma dias ruins em momentos especiais. 🌟',
-            color: 'from-yellow-400 to-amber-500'
-        },
-        {
-            id: 5,
-            icon: '💕',
-            title: 'Sentimentos Crescendo',
-            subtitle: 'Sentimentos',
-            text: 'Quando percebi o quanto você é importante...',
-            memory: 'Foi acontecendo aos poucos. De repente você não era só alguém especial, você era ESSENCIAL. Seus dias viraram meus dias, suas alegrias viraram minhas alegrias. Você se tornou parte de quem eu sou. 💖',
-            color: 'from-pink-400 to-rose-500'
-        },
-        {
-            id: 6,
-            icon: '🌈',
-            title: 'Nossos Momentos',
-            subtitle: 'Momentos',
-            text: 'Cada segundo ao seu lado é único...',
-            memory: 'Desde as coisas simples até os momentos mais especiais, tudo com você tem um significado diferente. Cada mensagem, cada encontro, cada conversa... são memórias que guardo com carinho no coração. Você faz os dias serem mais coloridos! 🎨',
-            color: 'from-emerald-400 to-teal-500'
-        },
-        {
-            id: 7,
-            icon: '💖',
-            title: 'Você, Yasmin',
-            subtitle: 'Você',
-            text: 'A pessoa mais especial...',
-            memory: 'Yasmin, você é incrível! Seu jeito meigo, sua doçura, seu amor pela Hello Kitty, sua forma única de ver o mundo... tudo em você me encanta. Sempre que eu ver algo relacionado à Hello Kitty, vou me lembrar de você. Porque ela é fofa e especial, assim como você é. Você não é só importante, você é essencial. Você não é só amada, você É o amor que ilumina minha vida. Obrigado por existir e por me deixar fazer parte da sua história. 🌸💕✨',
-            color: 'from-rose-400 to-pink-600'
-        },
-        {
-            id: 8,
-            icon: '🙏',
-            title: 'Nossa Fé e Futuro',
-            subtitle: 'Nossa Fé',
-            text: 'O que Deus tem preparado para nós...',
-            memory: 'Yasmin, eu espero todos os dias que nossa história possa estar sendo guiada por Deus. Que Ele ilumine nossas conversas, nossos caminhos e nossos corações. Oro para que cada dia possamos estar em conexão, não só um com o outro, mas com o propósito que Ele tem para nossas vidas. Quero que saiba que te amarei em todas as suas fases, nas boas e nas ruins, nos dias de sol e nos dias de tempestade. Obrigado pela sua confiança em mim. Isso é um presente que eu cuido com todo carinho. Se for da vontade de Deus, vamos construir algo lindo juntos. 🙏💕✨',
-            color: 'from-violet-400 to-purple-600'
+Eu sei que &agrave;s vezes o mundo pesa demais no seu peito, mesmo quando voc&ecirc; n&atilde;o diz nada. Eu sinto seu sil&ecirc;ncio, e ele nunca passa despercebido pra mim.
+
+Quero que saiba que eu estou aqui &mdash; n&atilde;o para te cobrar sorrisos, mas para te dar a minha m&atilde;o, mesmo quando tudo parece escuro. Voc&ecirc; n&atilde;o precisa ser forte o tempo todo. Pode descansar em mim quando quiser.
+
+Eu te amo nos seus dias bons, mas tamb&eacute;m &mdash; e talvez at&eacute; mais &mdash; nos seus dias nublados. Se o seu cora&ccedil;&atilde;o estiver cansado, deixa o meu te abra&ccedil;ar. Eu caminho contigo, no seu ritmo, sem pressa, sem cobran&ccedil;a.
+
+Voc&ecirc; &eacute; importante pra mim. Voc&ecirc; &eacute; luz, mesmo quando n&atilde;o consegue enxergar isso. E eu fico aqui, segurando voc&ecirc; com todo carinho que existe em mim. &hearts;
+                </div>
+            </div>
+
+            <!-- NÍVEL 3: Risadas -->
+            <div class="level locked" id="level3">
+                <div class="level-circle">
+                    <i class="level-icon fas fa-laugh-beam"></i>
+                    <div class="level-title">Risadas</div>
+                </div>
+            </div>
+
+            <!-- NÍVEL 4: Sentimentos -->
+            <div class="level locked" id="level4">
+                <div class="level-circle">
+                    <i class="level-icon fas fa-heart"></i>
+                    <div class="level-title">Sentimentos</div>
+                </div>
+            </div>
+
+            <!-- NÍVEL 5: Momentos -->
+            <div class="level locked" id="level5">
+                <div class="level-circle">
+                    <i class="level-icon fas fa-camera"></i>
+                    <div class="level-title">Momentos</div>
+                </div>
+            </div>
+
+            <!-- NÍVEL 6: Você -->
+            <div class="level locked" id="level6">
+                <div class="level-circle">
+                    <i class="level-icon fas fa-gem"></i>
+                    <div class="level-title">Voc&ecirc;</div>
+                </div>
+            </div>
+
+            <!-- NÍVEL 7: Nossa Fé -->
+            <div class="level locked" id="level7">
+                <div class="level-circle">
+                    <i class="level-icon fas fa-praying-hands"></i>
+                    <div class="level-title">Nossa F&eacute;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">✕</div>
+            <!-- Ícone do modal agora usa FontAwesome via JS -->
+            <div style="font-size: 50px; margin-bottom: 15px; color:#FF1493;" id="modalIconContainer"></div>
+            <h2 style="color: #FF1493; margin-bottom: 10px;" id="modalTitle"></h2>
+            <p style="color: #666; font-size: 16px;" id="modalText"></p>
+            <div class="modal-memory" id="modalMemory"></div>
+            <button class="btn-next" id="btnNext">Continuar Jornada ➜</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Gerar Nuvens Visualmente ---
+        const cloudsContainer = document.getElementById('clouds');
+        for (let i = 0; i < 6; i++) {
+            const cloud = document.createElement('div');
+            cloud.className = 'cloud';
+            const scale = 0.5 + Math.random();
+            cloud.style.width = (100 * scale) + 'px';
+            cloud.style.height = (40 * scale) + 'px';
+            cloud.style.top = Math.random() * 80 + '%';
+            cloud.style.animationDuration = (20 + Math.random() * 20) + 's';
+            cloud.style.animationDelay = (Math.random() * 10) + 's';
+            cloudsContainer.appendChild(cloud);
         }
-        ];
 
-        // --- COMPONENTES ---
-
-        const FloatingCloud = ({ delay, duration, top, size }) => (
-        <motion.div
-            className="absolute pointer-events-none opacity-40"
-            style={{ top: `${top}%`, fontSize: size }}
-            initial={{ x: -100 }}
-            animate={{ x: '100vw' }}
-            transition={{
-            duration,
-            delay,
-            repeat: Infinity,
-            ease: 'linear'
-            }}
-        >
-            ☁️
-        </motion.div>
-        );
-
-        const FloatingHearts = () => (
-        <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-            {[...Array(6)].map((_, i) => (
-            <motion.div
-                key={i}
-                className="absolute text-pink-300/30"
-                style={{
-                left: `${Math.random() * 100}%`,
-                fontSize: `${20 + Math.random() * 20}px`
-                }}
-                initial={{ y: '100vh', opacity: 0 }}
-                animate={{ y: '-100vh', opacity: [0, 1, 1, 0] }}
-                transition={{
-                duration: 8 + Math.random() * 4,
-                delay: i * 2,
-                repeat: Infinity,
-                ease: 'linear'
-                }}
-            >
-                ♥
-            </motion.div>
-            ))}
-        </div>
-        );
-
-        const ProgressBar = ({ progress }) => (
-        <div className="w-full max-w-xs mx-auto">
-            <div className="relative h-3 bg-white/30 rounded-full overflow-hidden backdrop-blur-sm border border-white/40">
-            <motion.div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-yellow-400 via-pink-500 to-rose-500 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-[10px] font-bold text-white drop-shadow-lg">
-                {Math.round(progress)}%
-                </span>
-            </div>
-            </div>
-        </div>
-        );
-
-        const LevelCard = ({ level, isLocked, isCompleted, onClick, index }) => {
-        const isLeft = index % 2 === 0;
-        
-        return (
-            <motion.div
-            className={`relative flex items-center gap-4 ${isLeft ? 'flex-row' : 'flex-row-reverse'}`}
-            initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-            >
-            {/* Connector Line */}
-            <div className={`hidden sm:block flex-1 h-0.5 ${isCompleted ? 'bg-gradient-to-r from-pink-400 to-rose-500' : 'bg-white/30'}`} />
-            
-            {/* Level Circle */}
-            <motion.button
-                onClick={onClick}
-                disabled={isLocked}
-                className={`relative group flex-shrink-0 ${isLocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                whileHover={!isLocked ? { scale: 1.08 } : {}}
-                whileTap={!isLocked ? { scale: 0.95 } : {}}
-            >
-                {/* Glow Effect */}
-                {!isLocked && (
-                <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${level.color} opacity-50 blur-xl group-hover:opacity-70 transition-opacity`} />
-                )}
-                
-                {/* Main Circle */}
-                <div className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center transition-all duration-300 ${
-                isLocked 
-                    ? 'bg-gray-300/80 border-4 border-gray-400/50' 
-                    : `bg-gradient-to-br ${level.color} border-4 border-white shadow-xl`
-                }`}>
-                {/* Level Number Badge */}
-                <div className={`absolute -top-2 -right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg ${
-                    isLocked ? 'bg-gray-500 text-white' : 'bg-white text-pink-600'
-                }`}>
-                    {level.id}
-                </div>
-                
-                {/* Icon */}
-                <motion.span 
-                    className={`text-3xl sm:text-4xl ${isLocked ? 'grayscale opacity-50' : ''}`}
-                    animate={!isLocked ? { y: [0, -5, 0] } : {}}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                    {isLocked ? '🔒' : level.icon}
-                </motion.span>
-                
-                {/* Completed Check */}
-                {isCompleted && (
-                    <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-white"
-                    >
-                    <span className="text-white text-xs">✓</span>
-                    </motion.div>
-                )}
-                </div>
-                
-                {/* Title below circle on mobile */}
-                <p className={`mt-2 text-center text-xs sm:text-sm font-medium max-w-[80px] sm:max-w-[100px] ${
-                isLocked ? 'text-gray-400' : 'text-white'
-                } drop-shadow-lg`}>
-                {level.subtitle}
-                </p>
-            </motion.button>
-            
-            {/* Connector Line */}
-            <div className={`hidden sm:block flex-1 h-0.5 ${isCompleted ? 'bg-gradient-to-r from-rose-500 to-pink-400' : 'bg-white/30'}`} />
-            </motion.div>
-        );
+        // Dados com classes de ícones FontAwesome
+        const levels = {
+            1: {
+                iconClass: 'fas fa-star', 
+                title: 'O Começo de Tudo',
+                text: 'Nossa história começou de uma forma especial...',
+                memory: 'Quando te conheci, algo mudou. Não foi só mais uma pessoa que entrou na minha vida, foi VOCÊ. E você trouxe uma luz diferente. ✨'
+            },
+            2: {
+                iconClass: 'fas fa-comments', 
+                title: 'Nossa Conexão',
+                text: 'Quando percebi que éramos diferentes...',
+                memory: 'Nossas conversas fluíam naturalmente. Podia falar sobre qualquer coisa com você e sempre parecia que o tempo parava. 💫'
+            },
+            3: {
+                iconClass: 'fas fa-laugh-beam', 
+                title: 'Suas Risadas',
+                text: 'O som que ilumina meus dias...',
+                memory: 'Sua risada é mágica! Toda vez que você ri, é como se o mundo inteiro ficasse mais leve. Eu faria qualquer coisa só pra ver você sorrindo. 🌟'
+            },
+            4: {
+                iconClass: 'fas fa-heart', 
+                title: 'Sentimentos Crescendo',
+                text: 'Quando percebi o quanto você é importante...',
+                memory: 'Foi acontecendo aos poucos. De repente você não era só alguém especial, você era ESSENCIAL. 💖'
+            },
+            5: {
+                iconClass: 'fas fa-camera', 
+                title: 'Nossos Momentos',
+                text: 'Cada segundo ao seu lado é único...',
+                memory: 'Desde as coisas simples até os momentos mais especiais, tudo com você tem um significado diferente. 🎨'
+            },
+            6: {
+                iconClass: 'fas fa-gem', 
+                title: 'Você, Yasmin',
+                text: 'A pessoa mais especial...',
+                memory: 'Yasmin, você é incrível! Seu jeito meigo, sua doçura, seu amor pela Hello Kitty... tudo em você me encanta. 🌸💕'
+            },
+            7: {
+                iconClass: 'fas fa-praying-hands', 
+                title: 'Nossa Fé e Futuro',
+                text: 'O que Deus tem preparado para nós...',
+                memory: 'Yasmin, eu espero todos os dias que nossa história possa estar sendo guiada por Deus. Se for da vontade de Deus, vamos construir algo lindo juntos. 🙏💕'
+            }
         };
 
-        const Modal = ({ level, onClose, onNext, isLast }) => (
-        <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-        >
-            <motion.div
-            className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto bg-white rounded-3xl shadow-2xl"
-            initial={{ scale: 0.8, y: 50 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.8, y: 50 }}
-            onClick={e => e.stopPropagation()}
-            >
-            {/* Header Gradient */}
-            <div className={`sticky top-0 z-10 p-6 pb-8 bg-gradient-to-br ${level.color} rounded-t-3xl`}>
-                <button
-                onClick={onClose}
-                className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-                >
-                <X className="w-5 h-5 text-white" />
-                </button>
-                
-                <motion.div
-                className="text-6xl sm:text-7xl text-center mb-4"
-                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                >
-                {level.icon}
-                </motion.div>
-                
-                <h2 className="text-2xl sm:text-3xl font-bold text-white text-center drop-shadow-lg">
-                {level.title}
-                </h2>
-            </div>
-            
-            {/* Content */}
-            <div className="p-6 space-y-6">
-                <p className="text-gray-600 text-center text-lg leading-relaxed">
-                {level.text}
-                </p>
-                
-                {/* Memory Card */}
-                <div className="relative p-5 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border-l-4 border-pink-400">
-                <div className="absolute -top-3 -left-3 w-8 h-8 bg-pink-400 rounded-full flex items-center justify-center">
-                    <Heart className="w-4 h-4 text-white fill-white" />
-                </div>
-                <p className="text-gray-700 leading-relaxed italic text-sm sm:text-base whitespace-pre-line">
-                    {level.memory}
-                </p>
-                </div>
-                
-                {/* Next Button */}
-                <motion.button
-                onClick={onNext}
-                className={`w-full py-4 rounded-2xl font-semibold text-white text-lg shadow-xl flex items-center justify-center gap-3 bg-gradient-to-r ${level.color}`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                >
-                {isLast ? (
-                    <>
-                    <span>💝 Fim da Jornada - Amém!</span>
-                    </>
-                ) : (
-                    <>
-                    <span>Continuar a Jornada</span>
-                    <ChevronRight className="w-5 h-5" />
-                    </>
-                )}
-                </motion.button>
-            </div>
-            </motion.div>
-        </motion.div>
-        );
+        let completedLevels = [];
 
-        const TreeWithFruits = ({ completedCount }) => (
-        <div className="fixed bottom-0 right-2 sm:right-6 z-10 pointer-events-none">
-            <div className="relative">
-            {/* Tree */}
-            <div className="text-[120px] sm:text-[180px] leading-none">🌳</div>
-            
-            {/* Fruits */}
-            <AnimatePresence>
-                {[...Array(completedCount)].map((_, i) => {
-                const positions = [
-                    { top: '15%', left: '20%' },
-                    { top: '25%', left: '60%' },
-                    { top: '10%', left: '40%' },
-                    { top: '30%', left: '15%' },
-                    { top: '20%', left: '70%' },
-                    { top: '35%', left: '45%' },
-                    { top: '15%', left: '55%' },
-                    { top: '28%', left: '35%' }
-                ];
-                const pos = positions[i] || { top: '20%', left: '50%' };
-                return (
-                    <motion.div
-                    key={i}
-                    className="absolute text-2xl sm:text-3xl"
-                    style={{ top: pos.top, left: pos.left }}
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 200 }}
-                    >
-                    🍎
-                    </motion.div>
-                );
-                })}
-            </AnimatePresence>
-            </div>
-        </div>
-        );
+        function openLevel(levelNum) {
+            const levelData = levels[levelNum];
+            if (!levelData) return;
 
-        function OurStoryMap() {
-        const [unlockedLevels, setUnlockedLevels] = useState([1]);
-        const [completedLevels, setCompletedLevels] = useState([]);
-        const [selectedLevel, setSelectedLevel] = useState(null);
-        const levelRefs = useRef({});
-        
-        const progress = (completedLevels.length / levels.length) * 100;
-        
-        const handleOpenLevel = (level) => {
-            if (!unlockedLevels.includes(level.id)) return;
-            
-            if (!completedLevels.includes(level.id)) {
-            setCompletedLevels(prev => [...prev, level.id]);
+            if (levelNum > 1 && !completedLevels.includes(levelNum - 1)) {
+                return; // Bloqueado
             }
-            setSelectedLevel(level);
-        };
-        
-        const handleNext = () => {
-            const currentId = selectedLevel.id;
-            setSelectedLevel(null);
+
+            // Inserir ícone no modal
+            const iconContainer = document.getElementById('modalIconContainer');
+            iconContainer.innerHTML = `<i class="${levelData.iconClass}"></i>`;
             
-            if (currentId < 8) {
-            const nextId = currentId + 1;
-            if (!unlockedLevels.includes(nextId)) {
-                setUnlockedLevels(prev => [...prev, nextId]);
-            }
-            
-            setTimeout(() => {
-                levelRefs.current[nextId]?.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-                });
-            }, 300);
+            document.getElementById('modalTitle').textContent = levelData.title;
+            document.getElementById('modalText').textContent = levelData.text;
+            document.getElementById('modalMemory').textContent = levelData.memory;
+
+            const btnNext = document.getElementById('btnNext');
+            if (levelNum < 7) {
+                btnNext.textContent = 'Desbloquear Próximo ➜';
+                btnNext.onclick = () => unlockLevel(levelNum);
             } else {
-            setTimeout(() => {
-                alert('Que Deus abençoe nossa história, Yasmin! 💕🙏✨');
-            }, 300);
+                btnNext.textContent = 'Amém! ❤️';
+                btnNext.onclick = () => {
+                    closeModal();
+                    unlockLevel(levelNum);
+                    setTimeout(() => alert("Yasmin, eu te amo! 💕"), 300);
+                };
             }
-        };
-        
-        return (
-            <div className="min-h-screen overflow-x-hidden">
-            {/* Floating Elements */}
-            <FloatingHearts />
-            <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-                <FloatingCloud delay={0} duration={25} top={10} size="40px" />
-                <FloatingCloud delay={5} duration={30} top={25} size="50px" />
-                <FloatingCloud delay={10} duration={20} top={40} size="35px" />
-                <FloatingCloud delay={15} duration={35} top={15} size="45px" />
-            </div>
-            
-            {/* Tree */}
-            <TreeWithFruits completedCount={completedLevels.length} />
-            
-            {/* Main Content */}
-            <div className="relative z-10 px-4 py-8 sm:py-12 max-w-2xl mx-auto">
-                {/* Header */}
-                <motion.header
-                className="text-center mb-8 sm:mb-12"
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                >
-                <div className="relative inline-block mb-4">
-                    {/* Animated GIFs on larger screens */}
-                    <img 
-                    src="https://media.tenor.com/RAmoFI__LV0AAAAi/luv-u.gif" 
-                    alt="" 
-                    className="hidden sm:block absolute -left-24 top-0 w-16 h-16"
-                    />
-                    <img 
-                    src="https://media.tenor.com/RAmoFI__LV0AAAAi/luv-u.gif" 
-                    alt="" 
-                    className="hidden sm:block absolute -right-24 top-0 w-16 h-16"
-                    />
-                    
-                    <h1 className="text-3xl sm:text-5xl font-bold text-white drop-shadow-lg flex items-center justify-center gap-2 flex-wrap">
-                    <span>🗺️</span>
-                    <span>Mapa da Nossa História</span>
-                    <span>💕</span>
-                    </h1>
-                </div>
-                
-                <p className="text-white/90 text-base sm:text-xl mb-6 drop-shadow">
-                    Uma jornada através dos nossos momentos especiais
-                </p>
-                
-                <ProgressBar progress={progress} />
-                </motion.header>
-                
-                {/* Map Path */}
-                <div className="relative pb-20">
-                {/* Vertical Path Line */}
-                <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-white/30 -translate-x-1/2 rounded-full" />
-                <motion.div 
-                    className="absolute left-1/2 top-0 w-1 bg-gradient-to-b from-yellow-400 via-pink-500 to-rose-500 -translate-x-1/2 rounded-full"
-                    style={{ height: `${progress}%` }}
-                    initial={{ height: 0 }}
-                    animate={{ height: `${progress}%` }}
-                    transition={{ duration: 0.5 }}
-                />
-                
-                {/* Levels */}
-                <div className="relative space-y-8 sm:space-y-12">
-                    {levels.map((level, index) => (
-                    <div 
-                        key={level.id} 
-                        ref={el => levelRefs.current[level.id] = el}
-                        className="relative"
-                    >
-                        <LevelCard
-                        level={level}
-                        isLocked={!unlockedLevels.includes(level.id)}
-                        isCompleted={completedLevels.includes(level.id)}
-                        onClick={() => handleOpenLevel(level)}
-                        index={index}
-                        />
-                    </div>
-                    ))}
-                </div>
-                </div>
-            </div>
-            
-            {/* Modal */}
-            <AnimatePresence>
-                {selectedLevel && (
-                <Modal
-                    level={selectedLevel}
-                    onClose={() => setSelectedLevel(null)}
-                    onNext={handleNext}
-                    isLast={selectedLevel.id === 8}
-                />
-                )}
-            </AnimatePresence>
-            </div>
-        );
+
+            document.getElementById('modal').style.display = 'flex';
         }
 
-        // Renderiza o aplicativo
-        const root = createRoot(document.getElementById('root'));
-        root.render(<OurStoryMap />);
+        function unlockLevel(currentNum) {
+            if (!completedLevels.includes(currentNum)) {
+                completedLevels.push(currentNum);
+                addFruit();
+                
+                const progress = (completedLevels.length / 7) * 100;
+                const bar = document.getElementById('progressBar');
+                bar.style.width = progress + '%';
+                bar.textContent = Math.round(progress) + '%';
+            }
+
+            closeModal();
+
+            const nextNum = currentNum + 1;
+            if (nextNum <= 7) {
+                const nextLevel = document.getElementById('level' + nextNum);
+                if (nextLevel) {
+                    nextLevel.classList.remove('locked');
+                    nextLevel.onclick = () => openLevel(nextNum);
+                    setTimeout(() => {
+                        nextLevel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            }
+        }
+
+        function addFruit() {
+            const container = document.getElementById('fruits-container');
+            const fruit = document.createElement('div');
+            fruit.className = 'fruit';
+            fruit.style.left = (20 + Math.random() * 120) + 'px';
+            fruit.style.top = (20 + Math.random() * 120) + 'px';
+            container.appendChild(fruit);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
     </script>
 </body>
 </html>
